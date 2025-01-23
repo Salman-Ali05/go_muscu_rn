@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 // Import your screens (pages)
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
 
 // Create a stack navigator
 const Stack = createStackNavigator();
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={RegisterScreen}  options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
