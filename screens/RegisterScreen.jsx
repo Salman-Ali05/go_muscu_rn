@@ -10,7 +10,7 @@ const RegisterScreen = ({ navigation }) => {
     try {
       // Ici, au lieu de localhost, mettre son addresse IPV4)
       // Ali estiam : 10.13.13.97
-      const response = await fetch('http://localhost:3000/api/users', {
+      const response = await fetch('http://10.13.15.160:4000/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

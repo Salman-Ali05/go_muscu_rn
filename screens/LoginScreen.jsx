@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Image, View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
+import { useTranslation } from "react-i18next";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { t } = useTranslation();
 
   const handleLogin = async () => {
     try {
       // Ici, au lieu de localhost, mettre son addresse IPV4)
       // Ali estiam : 10.13.13.97
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('http://10.13.15.160:4000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.contentWrapper}>
         <Image source={require('../assets/muscuImg.png')} style={{ width: 350, height: 350, objectFit: 'contain' }} />
-        <Text style={styles.header}>Login</Text>
+        <Text style={styles.header}>{t('login')}</Text>
         <TextInput
           placeholder="Email"
           style={styles.input}
