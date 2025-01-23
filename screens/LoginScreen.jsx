@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       // Ici, au lieu de localhost, mettre son addresse IPV4)
       // Ali estiam : 10.13.13.97
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('http://10.13.13.99/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
+    borderRadius: 15
   },
   subContent: {
     fontSize: 15,
