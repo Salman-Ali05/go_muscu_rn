@@ -24,7 +24,8 @@
     "react-native-svg": "^15.11.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "latest"
   },
   "private": true
 }
