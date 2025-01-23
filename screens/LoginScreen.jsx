@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
 
 const LoginScreen = ({ navigation }) => {
@@ -30,6 +30,11 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
+    style={styles.container}
+  >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>
@@ -80,6 +85,8 @@ const LoginScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </View>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
