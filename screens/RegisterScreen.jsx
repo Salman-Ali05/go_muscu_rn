@@ -1,35 +1,42 @@
 import React, { useState } from 'react';
-import {Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
-
-
+import { Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import DateTimePickerModal from "react-native-modal-datetime-picker"; // ✅ Import du DatePicker
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [birthdate, setBirthdate] = useState(''); // ✅ Stocke la date sélectionnée
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  // ✅ Gérer l'affichage du DatePicker
+  const showDatePicker = () => setDatePickerVisibility(true);
+  const hideDatePicker = () => setDatePickerVisibility(false);
+
+  // ✅ Gérer la sélection de la date
+  const handleConfirm = (date) => {
+    const formattedDate = date.toISOString().split('T')[0]; // 📅 Format YYYY-MM-DD
+    setBirthdate(formattedDate);
+    hideDatePicker();
+  };
 
   const handleNavigateRegisterProgram = () => {
     navigation.navigate('RegisterProject');
-  }
+  };
 
   const handleRegister = async () => {
     try {
-      // Ici, au lieu de localhost, mettre son addresse IPV4)
-      // Ali estiam : 10.13.13.97
       const response = await fetch('http://10.13.15.160:4000/api/users', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, birthdate }), // ✅ Envoie la date
       });
 
       const data = await response.json();
 
       if (response.ok) {
         Alert.alert('Succès', 'Votre compte a été créé avec succès');
-        // Rediriger vers la page de connexion
         navigation.navigate('Login');
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la création du compte');
@@ -42,9 +49,8 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.titleContainer}>
-      <Icon name="back" size={20} color="#000000" style={styles.icon} />  
+        <Icon name="arrow-back" size={30} color="#000" onPress={() => navigation.goBack()} />  
         <Text style={styles.title}>
           Go<Text style={styles.title2}>Muscu</Text>
         </Text>
@@ -54,9 +60,9 @@ const RegisterScreen = ({ navigation }) => {
         <Image source={require('../assets/muscuImg.png')} style={{ width: 350, height: 350, objectFit: 'contain' }} />
       </View>
 
-      {/* champ user */}
+      {/* Champ Nom d'utilisateur */}
       <View style={styles.inputContainer}>
-      <Icon name="home" size={20} color="#e6e7e7" style={styles.icon} />  
+        <Icon name="person" size={20} color="#e6e7e7" style={styles.icon} />  
         <TextInput
           placeholder="Nom d'utilisateur"
           style={styles.input}
@@ -66,9 +72,9 @@ const RegisterScreen = ({ navigation }) => {
         />  
       </View>
 
-      {/* champ email */}  
+      {/* Champ Email */}
       <View style={styles.inputContainer}>
-      <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />  
+        <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />  
         <TextInput
           placeholder="Email"
           style={styles.input}
@@ -78,10 +84,9 @@ const RegisterScreen = ({ navigation }) => {
         />
       </View>
 
-      {/* champ email */}  
-      
+      {/* Champ Mot de passe */}
       <View style={styles.inputContainer}>   
-      <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />   
+        <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />   
         <TextInput
           placeholder="Mot de passe"
           secureTextEntry
@@ -91,25 +96,49 @@ const RegisterScreen = ({ navigation }) => {
           placeholderTextColor="#e6e7e7"
         />
       </View>
+
+      {/* ✅ Champ Date de naissance */}
+      <View style={styles.inputContainer}>
+        <Icon name="calendar-today" size={20} color="#e6e7e7" style={styles.icon} />
+        <TouchableOpacity onPress={showDatePicker}>
+          <TextInput
+            style={styles.input}
+            placeholder="Date de naissance"
+            value={birthdate}
+            editable={false} // ✅ Empêche la saisie manuelle
+            placeholderTextColor="#e6e7e7"
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* ✅ Modale de sélection de date */}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+
+      {/* Boutons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonStyle}>
-          <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} />
+        <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
+          <Icon name="login" size={30} color="#e6e7e7" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonStyle} onPress={handleNavigateRegisterProgram}>
           <Icon name="home" size={30} color="#e6e7e7" />
         </TouchableOpacity>
       </View>
-      {/* <Button title="Créer un compte" onPress={handleRegister} />
-      <Button
-        title="Retour à la connexion"
-        onPress={() => navigation.navigate('Login')}
-      /> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems:'center',
+    padding: 20,
+  },
   titleContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -125,20 +154,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#414144',
   },
-
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems:'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   inputContainer: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#B8B8FF',
     borderRadius: 40,
@@ -146,26 +163,27 @@ const styles = StyleSheet.create({
     width: 300,
     marginBottom: 20,
     paddingHorizontal: 15,
-    marginLeft:10
-
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#fff',
+    marginLeft: 10,
   },
   buttonStyle: {
-    backgroundColor: '#B8B8FF', // Couleur de fond
-    paddingVertical: 15, 
-    paddingHorizontal: 10,
+    backgroundColor: '#B8B8FF',
     height: 70, 
     width: 70, 
-    borderRadius: 35, 
+    borderRadius: 35,
     alignItems: 'center', 
     justifyContent: 'center', 
     marginVertical: 10,
   },
   buttonContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
-  }
+  },
 });
 
 export default RegisterScreen;

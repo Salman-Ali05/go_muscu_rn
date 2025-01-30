@@ -178,13 +178,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#414144',
   },
-  contain_nav: {
-    width:"100%",
-    height: "10%",
-    // backgroundColor:"blue",
-    flexDirection: "row",
-    justifyContent: "space-around"
-  },
   footerContainer: {
     display: 'flex',
     justifyContent: 'center',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Navbar from '../components/Navbar';
 
 const HomeScreen = () => {
 
@@ -33,17 +34,7 @@ const HomeScreen = () => {
                     </View>
             </View>
         </View>
-
-        <View style={styles.contain_nav}>
-            <View style={styles.target_icon}>
-                <Icon name="target" size={50} color="#B8B8FF" />
-            </View>
-            <View style={styles.home_icon}>  
-                 <Icon name="home" size={50} color="#B8B8FF" />  
-            </View>
-
-        </View>
-
+            <Navbar></Navbar>
     </View>
   );
 };

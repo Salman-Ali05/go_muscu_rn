@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ProgramBox = ({ title, image, onPress }) => {
+const ProgramBox = ({ name, image, onPress }) => {
   return (
     <TouchableOpacity style={styles.box} onPress={onPress}>
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{name}</Text>
         <Image source={image} style={styles.image} />
       </View>
     </TouchableOpacity>
@@ -14,8 +14,8 @@ const ProgramBox = ({ title, image, onPress }) => {
 
 const styles = StyleSheet.create({
   box: {
-    width: "45%", // ✅ 2 colonnes
-    aspectRatio: 1, // ✅ Carré
+    width: "45%", // 2 colonnes
+    aspectRatio: 1, // Carré
     backgroundColor: "#B8B8FF",
     justifyContent: "center",
     alignItems: "center",
