@@ -1,36 +1,32 @@
 import React, { useState } from 'react';
-import { Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { 
+  Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, ScrollView 
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DateTimePickerModal from "react-native-modal-datetime-picker"; // ✅ Import du DatePicker
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [birthdate, setBirthdate] = useState(''); // ✅ Stocke la date sélectionnée
+  const [birthdate, setBirthdate] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  // ✅ Gérer l'affichage du DatePicker
   const showDatePicker = () => setDatePickerVisibility(true);
   const hideDatePicker = () => setDatePickerVisibility(false);
 
-  // ✅ Gérer la sélection de la date
   const handleConfirm = (date) => {
-    const formattedDate = date.toISOString().split('T')[0]; // 📅 Format YYYY-MM-DD
+    const formattedDate = date.toISOString().split('T')[0];
     setBirthdate(formattedDate);
     hideDatePicker();
   };
 
-  const handleNavigateRegisterProgram = () => {
-    navigation.navigate('RegisterProject');
-  };
-
   const handleRegister = async () => {
     try {
-      const response = await fetch('http://10.13.15.160:4000/api/users', {
+      const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, birthdate }), // ✅ Envoie la date
+        body: JSON.stringify({ name, email, password, birthdate }),
       });
 
       const data = await response.json();
@@ -56,78 +52,81 @@ const RegisterScreen = ({ navigation }) => {
         </Text>
       </View>
 
-      <View style={styles.imageContainer}>
-        <Image source={require('../assets/muscuImg.png')} style={{ width: 350, height: 350, objectFit: 'contain' }} />
-      </View>
+      {/* Conteneur avec ScrollView pour éviter le débordement */}
+      <ScrollView contentContainerStyle={styles.formContainer} showsVerticalScrollIndicator={false}>
+        
+        {/*  Image plus petite pour laisser de la place */}
+        <Image source={require('../assets/muscuImg.png')} style={styles.image} />
 
-      {/* Champ Nom d'utilisateur */}
-      <View style={styles.inputContainer}>
-        <Icon name="person" size={20} color="#e6e7e7" style={styles.icon} />  
-        <TextInput
-          placeholder="Nom d'utilisateur"
-          style={styles.input}
-          value={name}
-          onChangeText={(text) => setName(text)}
-          placeholderTextColor="#e6e7e7"
-        />  
-      </View>
-
-      {/* Champ Email */}
-      <View style={styles.inputContainer}>
-        <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />  
-        <TextInput
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          placeholderTextColor="#e6e7e7"
-        />
-      </View>
-
-      {/* Champ Mot de passe */}
-      <View style={styles.inputContainer}>   
-        <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />   
-        <TextInput
-          placeholder="Mot de passe"
-          secureTextEntry
-          style={styles.input}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          placeholderTextColor="#e6e7e7"
-        />
-      </View>
-
-      {/* ✅ Champ Date de naissance */}
-      <View style={styles.inputContainer}>
-        <Icon name="calendar-today" size={20} color="#e6e7e7" style={styles.icon} />
-        <TouchableOpacity onPress={showDatePicker}>
+        {/*  Champ Nom */}
+        <View style={styles.inputContainer}>
+          <Icon name="person" size={20} color="#e6e7e7" style={styles.icon} />  
           <TextInput
+            placeholder="Nom d'utilisateur"
             style={styles.input}
-            placeholder="Date de naissance"
-            value={birthdate}
-            editable={false} // ✅ Empêche la saisie manuelle
+            value={name}
+            onChangeText={setName}
             placeholderTextColor="#e6e7e7"
           />
-        </TouchableOpacity>
-      </View>
+        </View>
 
-      {/* ✅ Modale de sélection de date */}
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
+        {/* Champ Email */}
+        <View style={styles.inputContainer}>
+          <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />  
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholderTextColor="#e6e7e7"
+          />
+        </View>
 
-      {/* Boutons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
-          <Icon name="login" size={30} color="#e6e7e7" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonStyle} onPress={handleNavigateRegisterProgram}>
-          <Icon name="home" size={30} color="#e6e7e7" />
-        </TouchableOpacity>
-      </View>
+        {/*  Champ Mot de passe */}
+        <View style={styles.inputContainer}>   
+          <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />   
+          <TextInput
+            placeholder="Mot de passe"
+            secureTextEntry
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholderTextColor="#e6e7e7"
+          />
+        </View>
+
+        {/* Champ Date de naissance */}
+        <View style={styles.inputContainer}>
+          <Icon name="calendar-today" size={20} color="#e6e7e7" style={styles.icon} />
+          <TouchableOpacity onPress={showDatePicker}>
+            <TextInput
+              style={styles.input}
+              placeholder="Date de naissance"
+              value={birthdate}
+              editable={false}
+              placeholderTextColor="#e6e7e7"
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Modale DatePicker */}
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+
+        {/* Conteneur des boutons remonté */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
+            <Icon name="login" size={30} color="#e6e7e7" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('RegisterProject')}>
+            <Icon name="home" size={30} color="#e6e7e7" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -135,24 +134,31 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems:'center',
-    padding: 20,
+    paddingTop: 20, // Remonte tout le contenu
+    alignItems: 'center',
   },
   titleContainer: {
-    display: 'flex',
     alignItems: 'center',
   },
   title: {
-    fontSize: 64,
+    fontSize: 48, // Réduit pour économiser de l'espace
     fontWeight: '400',
     color: '#B8B8FF',
-    marginTop: 30,
   },
   title2: {
-    fontSize: 64,
+    fontSize: 48,
     fontWeight: '400',
     color: '#414144',
+  },
+  formContainer: {
+    alignItems: 'center',
+    paddingBottom: 40, //  Évite que le dernier bouton soit coupé
+  },
+  image: {
+    width: 250, //  Taille réduite
+    height: 250, // Moins d'espace pris
+    objectFit: 'contain',
+    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 50,
     width: 300,
-    marginBottom: 20,
+    marginBottom: 15, //  Réduit l'espacement pour économiser de la place
     paddingHorizontal: 15,
   },
   input: {
@@ -172,17 +178,17 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF',
-    height: 70, 
-    width: 70, 
-    borderRadius: 35,
+    height: 60, //  Taille plus petite pour économiser de l'espace
+    width: 60, 
+    borderRadius: 30,
     alignItems: 'center', 
-    justifyContent: 'center', 
-    marginVertical: 10,
+    justifyContent: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
+    marginTop: 20, // Ajout d'une marge pour éviter l'écrasement
   },
 });
 
