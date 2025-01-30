@@ -8,7 +8,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://10.13.15.160:4000/api/auth/login', {
+      const response = await fetch('https://go-muscu-api-seven.vercel.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
