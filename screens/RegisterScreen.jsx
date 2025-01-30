@@ -46,7 +46,7 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Icon name="arrow-back" size={30} color="#000" onPress={() => navigation.goBack()} />  
+        <Icon name="arrow-back" size={30} color="#000" onPress={() => navigation.goBack()} style={styles.backIcon} />  
         <Text style={styles.title}>
           Go<Text style={styles.title2}>Muscu</Text>
         </Text>
@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
+    gap:10
   },
   title: {
     fontSize: 48, // Réduit pour économiser de l'espace
@@ -190,6 +192,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginTop: 20, // Ajout d'une marge pour éviter l'écrasement
   },
+  
 });
 
 export default RegisterScreen;
