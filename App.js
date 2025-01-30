@@ -8,7 +8,7 @@ import { NativeBaseProvider } from 'native-base'; // ✅ Importation de NativeBa
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import RegisterProjectScreen from './screens/RegisterProjectScreen';
+import RegisterProgramScreen from './screens/RegisterProgramScreen';
 
 // Création du stack navigator
 const Stack = createStackNavigator();
@@ -21,7 +21,7 @@ export default function App() {
           <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="RegisterProject" component={RegisterProjectScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="RegisterProject" component={RegisterProgramScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Image, View, Text, Button, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import {Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
 
 
@@ -8,6 +8,10 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleNavigateRegisterProgram = () => {
+    navigation.navigate('RegisterProject');
+  }
 
   const handleRegister = async () => {
     try {
@@ -87,9 +91,14 @@ const RegisterScreen = ({ navigation }) => {
           placeholderTextColor="#e6e7e7"
         />
       </View>
-      <TouchableOpacity style={styles.buttonStyle}>
-         <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} />
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonStyle}>
+          <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyle} onPress={handleNavigateRegisterProgram}>
+          <Icon name="home" size={30} color="#e6e7e7" />
+        </TouchableOpacity>
+      </View>
       {/* <Button title="Créer un compte" onPress={handleRegister} />
       <Button
         title="Retour à la connexion"
@@ -151,6 +160,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     marginVertical: 10,
   },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  }
 });
 
 export default RegisterScreen;

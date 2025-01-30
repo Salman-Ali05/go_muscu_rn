@@ -8,7 +8,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://10.13.13.99:3000/api/auth/login', {
+      const response = await fetch('http://10.13.15.160:4000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,10 +29,6 @@ const LoginScreen = ({ navigation }) => {
       console.error(error);
     }
   };
-
-  const handleHomeRedirection = () => {
-    navigation.navigate('Home');
-  }
 
   return (
     <KeyboardAvoidingView
@@ -88,9 +84,6 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.buttonStyle}>
             <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Icon name="home" size={30} color="#e6e7e7" onPress={handleHomeRedirection}/>
           </TouchableOpacity>
         </View>
       </View>
