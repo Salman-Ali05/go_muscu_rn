@@ -30,6 +30,10 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  const handleHomeRedirection = () => {
+    navigation.navigate('Home');
+  }
+
   return (
     <KeyboardAvoidingView
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
@@ -81,9 +85,14 @@ const LoginScreen = ({ navigation }) => {
             Créez-en un ici
           </Text>
         </Text>
-        <TouchableOpacity style={styles.buttonStyle}>
+        <View style={styles.footerContainer}>
+          <TouchableOpacity style={styles.buttonStyle}>
             <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
-        </TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle}>
+            <Icon name="home" size={30} color="#e6e7e7" onPress={handleHomeRedirection}/>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
     </TouchableWithoutFeedback>
@@ -146,16 +155,21 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF', // Couleur de fond
-    paddingVertical: 15, 
-    paddingHorizontal: 10,
     height: 70, 
     width: 70, 
-    borderRadius: 35, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    marginVertical: 10,
+    borderRadius: 35,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  
+  footerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    marginTop: 20,
+  }
 });
 
 export default LoginScreen;
