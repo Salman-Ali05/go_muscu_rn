@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.ok) {
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
-        navigation.navigate("HomeScreen");
+        navigation.navigate("Home");
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la connexion');
       }
