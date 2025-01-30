@@ -20,6 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.ok) {
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
+        navigation.navigate("HomeScreen");
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la connexion');
       }
@@ -81,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </Text>
         <TouchableOpacity style={styles.buttonStyle}>
-            <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} />
+            <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
         </TouchableOpacity>
       </View>
     </View>
