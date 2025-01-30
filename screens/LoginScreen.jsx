@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
-import { useTranslation } from "react-i18next";
+import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -9,9 +9,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      // Ici, au lieu de localhost, mettre son addresse IPV4)
-      // Ali estiam : 10.13.13.97
-      const response = await fetch('http://10.13.15.160:4000/api/auth/login', {
+      const response = await fetch('http://10.13.13.99:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,12 +20,9 @@ const LoginScreen = ({ navigation }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Connexion réussie
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
-        // Vous pouvez rediriger vers une autre page ici
-        // navigation.navigate('Dashboard');
+        navigation.navigate("HomeScreen");
       } else {
-        // Échec de la connexion
         Alert.alert('Erreur', data.message || 'Échec de la connexion');
       }
     } catch (error) {
@@ -37,28 +32,47 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
+    style={styles.container}
+  >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>
           Go<Text style={styles.title2}>Muscu</Text>
         </Text>
       </View>
-      <View style={styles.contentWrapper}>
+      <View style={styles.imageContainer}>
         <Image source={require('../assets/muscuImg.png')} style={{ width: 350, height: 350, objectFit: 'contain' }} />
-        <Text style={styles.header}>{t('login')}</Text>
-        <TextInput
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          placeholder="Mot de passe"
-          secureTextEntry
-          style={styles.input}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
+      </View>
+      <View style={styles.contentWrapper}>
+        
+        {/* Champ Email */}
+        <View style={styles.inputContainer}>
+          <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor="#e6e7e7"
+            style={styles.input}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
+
+        {/* Champ Mot de passe */}
+        <View style={styles.inputContainer}>
+          <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />
+          <TextInput
+            placeholder="Mot de passe"
+            placeholderTextColor="#e6e7e7"
+            secureTextEntry
+            style={styles.input}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
+
         <Text style={styles.subContent}>
           Pas de compte ?{' '}
           <Text
@@ -68,9 +82,13 @@ const LoginScreen = ({ navigation }) => {
             Créez-en un ici
           </Text>
         </Text>
-        <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity style={styles.buttonStyle}>
+            <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
+        </TouchableOpacity>
       </View>
     </View>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -83,6 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 64,
     fontWeight: '400',
     color: '#B8B8FF',
+    marginTop: 30,
   },
   title2: {
     fontSize: 64,
@@ -93,17 +112,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  inputContainer: {
+    flexDirection: 'row', // Place les icônes et les champs côte à côte
+    alignItems: 'center',
+    backgroundColor: '#B8B8FF', // Couleur de fond
+    borderRadius: 40, // Arrondi
+    height: 70,
+    width: 300,
     marginBottom: 20,
+    paddingHorizontal: 15,
+  },
+  icon: {
+    marginRight: 10, // Espace entre l'icône et le champ
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
+    flex: 1, // Prend tout l'espace restant
+    fontSize: 16,
+    color: '#fff', // Couleur du texte
   },
   subContent: {
     fontSize: 15,
@@ -118,7 +143,20 @@ const styles = StyleSheet.create({
   contentWrapper: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
   },
+  buttonStyle: {
+    backgroundColor: '#B8B8FF', // Couleur de fond
+    paddingVertical: 15, 
+    paddingHorizontal: 10,
+    height: 70, 
+    width: 70, 
+    borderRadius: 35, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginVertical: 10,
+  },
+  
 });
 
 export default LoginScreen;
