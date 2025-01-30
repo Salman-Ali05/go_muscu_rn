@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icône
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { t } = useTranslation();
 
   const handleLogin = async () => {
     try {
