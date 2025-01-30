@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.imageContainer}>
-        <Image source={require('../assets/muscuImg.png')} style={{ width: 350, height: 350, objectFit: 'contain' }} />
+        <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
       </View>
       <View style={styles.contentWrapper}>
         
@@ -100,13 +100,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 64,
+    fontSize: 55,
     fontWeight: '400',
     color: '#B8B8FF',
     marginTop: 30,
   },
   title2: {
-    fontSize: 64,
+    fontSize: 55,
     fontWeight: '400',
     color: '#414144',
   },
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#B8B8FF', // Couleur de fond
     borderRadius: 40, // Arrondi
-    height: 70,
+    height: 60,
     width: 300,
     marginBottom: 20,
     paddingHorizontal: 15,
@@ -163,6 +163,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
     marginTop: 20,
+  },
+  Image:{
+    width: 300, 
+    height: 250, 
+    objectFit: 'contain', 
   }
 });
 
