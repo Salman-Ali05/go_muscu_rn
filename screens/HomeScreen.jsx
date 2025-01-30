@@ -36,10 +36,10 @@ const HomeScreen = () => {
 
         <View style={styles.contain_nav}>
             <View style={styles.target_icon}>
-                <Icon name="target" size={50} color="#1c2833" />
+                <Icon name="target" size={50} color="#B8B8FF" />
             </View>
             <View style={styles.home_icon}>  
-                 <Icon name="home" size={50} color="#1c2833" />  
+                 <Icon name="home" size={50} color="#B8B8FF" />  
             </View>
 
         </View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       contain_nav: {
         width:"100%",
         height: "10%",
-        // backgroundColor:"blue",
+        backgroundColor:"blue",
         flexDirection: "row",
         justifyContent: "space-around"
       }

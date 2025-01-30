@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import ProgramBox from '../components/ProgramItem';
 
 const RegisterProgramScreen = ({ navigation }) => {
 
@@ -43,19 +44,12 @@ const RegisterProgramScreen = ({ navigation }) => {
         <View style={styles.container_program}>
           <View style={styles.grid}>
             {programs.map((item) => (
-              <TouchableOpacity style={styles.box} onPress={handleHomeRedirection}>
-                <View key={item.id} style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Text style={{
-                    marginBottom: 10,
-                    fontWeight: 600
-                  }}>{item?.name}</Text>
-                  <Image source={item?.img} style={{ width: 80, height: 80 }} />
-                </View>
-              </TouchableOpacity>
+              <ProgramBox
+                key={item.key}
+                name={item.name}
+                image={item.img}
+                onPress={handleHomeRedirection}
+              />
             ))}
           </View>
         </View>
