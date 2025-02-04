@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { Image, View, Text, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
-
+import { FieldComponent } from '../components/FieldComponent';
+import { TouchableButton } from '../components/TouchableButton';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,29 +50,22 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.contentWrapper}>
         
         {/* Champ Email */}
-        <View style={styles.inputContainer}>
-          <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#e6e7e7"
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
+        <FieldComponent 
+          iconName="email"
+          placeholder="Email"
+          secureTextEntry={false}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
 
         {/* Champ Mot de passe */}
-        <View style={styles.inputContainer}>
-          <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />
-          <TextInput
-            placeholder="Mot de passe"
-            placeholderTextColor="#e6e7e7"
-            secureTextEntry
-            style={styles.input}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
+        <FieldComponent 
+          iconName="lock"
+          placeholder="Mot de passe"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
 
         <Text style={styles.subContent}>
           Pas de compte ?{' '}
@@ -82,11 +76,7 @@ const LoginScreen = ({ navigation }) => {
             Créez-en un ici
           </Text>
         </Text>
-        <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
-          </TouchableOpacity>
-        </View>
+        <TouchableButton iconName='login' onPress={handleLogin} />
       </View>
     </View>
     </TouchableWithoutFeedback>
