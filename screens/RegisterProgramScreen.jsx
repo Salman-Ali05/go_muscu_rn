@@ -43,14 +43,15 @@ const RegisterProgramScreen = ({ navigation }) => {
       return;
     }
  
-    setUserData({ goal: selectedGoal }); // Enregistrement dans Zustand
+    setUserData({ programID: selectedGoal }); // Enregistrement dans Zustand
  
     try {
       const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, birthdate, goal: selectedGoal }),
+        body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
       });
+      console.log(response);
  
       if (response.ok) {
         Alert.alert('Succès', 'Inscription réussie !');

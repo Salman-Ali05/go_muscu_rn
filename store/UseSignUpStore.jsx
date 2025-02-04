@@ -5,7 +5,7 @@ const useSignupStore = create((set) => ({
   email: '',
   password: '',
   birthdate: '',
-  goal: '',
+  programID: '',
   setUserData: (data) => set((state) => ({ ...state, ...data })),
 }));
 
