@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProgramBox from '../components/ProgramItem';
-import useSignupStore from '../store/UseSignUpStore'; // ✅ Ajout du store Zustand
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import useSignupStore from '../store/UseSignUpStore';
+import { useNavigation } from '@react-navigation/native';
+
+const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs'; // 
 
 const RegisterProgramScreen = ({ navigation }) => {
   const { name, email, password, birthdate, setUserData } = useSignupStore();
-  const [selectedGoal, setSelectedGoal] = useState(null); // ✅ Stocke l'objectif sélectionné avant validation
+  const [programs, setPrograms] = useState([]); // ✅ Stockage des programmes récupérés
+  const [selectedGoal, setSelectedGoal] = useState(null);
+  const [loading, setLoading] = useState(true); // ✅ Indicateur de chargement
 
-  const programs = [
-    { id: 1, key: 'pdm', name: 'Prise de masse', img: require('../assets/pdm.png') },
-    { id: 2, key: 'force', name: 'Force', img: require('../assets/force.png') },
-    { id: 3, key: 'cardio', name: 'Cardio', img: require('../assets/cardio.png') },
-    { id: 4, key: 'sw', name: 'StreetWorkout', img: require('../assets/st.png') }
-  ];
+  //  Récupération des programmes dynamiques
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setPrograms(data); // ✅ Stockage des programmes
+        setLoading(false);
+        console.log("reponse API", data)
+      } catch (error) {
+        Alert.alert('Erreur', 'Impossible de récupérer les programmes.');
+        console.error(error);
+        setLoading(false);
+      }
+    };
 
-  // Fonction pour enregistrer l'objectif et finaliser l'inscription
+    fetchPrograms();
+  }, []);
+
+  //  Fonction pour valider l'inscription avec l'ID du programme sélectionné
   const handleRegister = async () => {
     if (!selectedGoal) {
       Alert.alert('Erreur', 'Veuillez sélectionner un objectif.');
       return;
     }
 
-    // Enregistrement dans Zustand
-    setUserData({ goal: selectedGoal });
+    setUserData({ goal: selectedGoal }); // Enregistrement dans Zustand
 
     try {
       const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
@@ -34,7 +48,7 @@ const RegisterProgramScreen = ({ navigation }) => {
 
       if (response.ok) {
         Alert.alert('Succès', 'Inscription réussie !');
-        navigation.navigate('Home'); // ✅ Redirection vers l'accueil après succès
+        navigation.navigate('Home');
       } else {
         Alert.alert('Erreur', 'Échec de l’inscription.');
       }
@@ -51,59 +65,44 @@ const RegisterProgramScreen = ({ navigation }) => {
         </Text>
       </View>
 
-      <View style={styles.container_for_program}>
-        <View style={styles.container_program}>
-          <View style={styles.grid}>
-            {programs.map((item) => (
-              <TouchableOpacity
-                key={item.key}
-                style={[
-                  styles.programBox,
-                  selectedGoal === item.key && styles.selectedProgram // Ajout d'un visuel pour l'objectif sélectionné
-                ]}
-                onPress={() => setSelectedGoal(item.key)}
-              >
-                <Image source={item.img} style={styles.programImage} />
-                <Text style={styles.programText}>{item.name}</Text>
-              </TouchableOpacity>
-            ))}
+      {loading ? (
+        <ActivityIndicator size="large" color="#B8B8FF" /> // Indicateur de chargement
+      ) : (
+        <View style={styles.container_for_program}>
+          <View style={styles.container_program}>
+            <View style={styles.grid}>
+              {programs.map((item) => (
+                <TouchableOpacity
+                  key={item._id} // ✅ Utilisation de l'ID dynamique
+                  style={[
+                    styles.programBox,
+                    selectedGoal === item._id && styles.selectedProgram, // Ajout d'un visuel pour la sélection
+                  ]}
+                  onPress={() => setSelectedGoal(item._id)}
+                >
+                  <Image source={{ uri: item.image }} style={styles.programImage} />
+                  <Text style={styles.programText}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Bouton pour valider l'inscription */}
+          <View style={styles.footerContainer}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Valider</Text>
+            </TouchableOpacity>
           </View>
         </View>
-
-        {/* Bouton pour valider l'inscription après sélection */}
-        <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
-            <Icon name="check" size={30} color="#e6e7e7" style={styles.icon} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  titleContainer: { display: 'flex', alignItems: 'center' },
   title: { fontSize: 64, fontWeight: '400', color: '#B8B8FF', marginTop: 30 },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#B8B8FF',
-    borderRadius: 40,
-    height: 70,
-    width: 300,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-  },
   title2: { fontSize: 64, fontWeight: '400', color: '#414144' },
-  header: {
-    height: "10%",
-    width: "100%",
-    marginTop: "30%",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
   container_for_program: { justifyContent: "center", alignItems: "center", flex: 1 },
   container_program: {
     height: "70%",
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   selectedProgram: {
-    backgroundColor: "#4CAF50", // ✅ Couleur différente pour montrer l'objectif sélectionné
+    backgroundColor: "#4CAF50",
     borderColor: "#FFF",
     borderWidth: 2
   },
@@ -141,17 +140,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
     marginTop: 20,
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF',
     height: 70,
-    width: 70,
+    width: 150,
     borderRadius: 35,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
