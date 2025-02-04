@@ -4,8 +4,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import useSignupStore from '../store/UseSignUpStore'; // ✅ Utilisation de Zustand pour stocker les données
+import { useNavigation } from '@react-navigation/native';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = () => {
+  const navigation = useNavigation();
+  const setUserData = useSignupStore((state) => state.setUserData);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,26 +26,17 @@ const RegisterScreen = ({ navigation }) => {
     hideDatePicker();
   };
 
-  const handleRegister = async () => {
-    try {
-      const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, birthdate }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert('Succès', 'Votre compte a été créé avec succès');
-        navigation.navigate('Login');
-      } else {
-        Alert.alert('Erreur', data.message || 'Échec de la création du compte');
-      }
-    } catch (error) {
-      Alert.alert('Erreur', 'Une erreur est survenue, veuillez réessayer.');
-      console.error(error);
+  const handleNextStep = () => {
+    if (!name || !email || !password || !birthdate) {
+      Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
+      return;
     }
+
+    // Stocker les données temporairement avec Zustand
+    setUserData({ name, email, password, birthdate });
+
+    // Rediriger vers l'écran de sélection d'objectif
+    navigation.navigate('RegisterProject');
   };
 
   return (
@@ -117,13 +113,10 @@ const RegisterScreen = ({ navigation }) => {
           onCancel={hideDatePicker}
         />
 
-        {/* Conteneur des boutons remonté */}
+        {/* Bouton Suivant */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={handleRegister}>
-            <Icon name="login" size={30} color="#e6e7e7" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('RegisterProject')}>
-            <Icon name="home" size={30} color="#e6e7e7" />
+          <TouchableOpacity style={styles.buttonStyle} onPress={handleNextStep}>
+            <Icon name="arrow-forward" size={30} color="#e6e7e7" />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -134,16 +127,16 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20, // Remonte tout le contenu
+    paddingTop: 20,
     alignItems: 'center',
   },
   titleContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap:10
+    gap: 10
   },
   title: {
-    fontSize: 48, // Réduit pour économiser de l'espace
+    fontSize: 48,
     fontWeight: '400',
     color: '#B8B8FF',
   },
@@ -154,12 +147,12 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     alignItems: 'center',
-    paddingBottom: 40, //  Évite que le dernier bouton soit coupé
+    paddingBottom: 40,
   },
   image: {
-    width: 250, //  Taille réduite
-    height: 250, // Moins d'espace pris
-    objectFit: 'contain',
+    width: 250,
+    height: 250,
+    resizeMode: 'contain',
     marginBottom: 10,
   },
   inputContainer: {
@@ -169,7 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 50,
     width: 300,
-    marginBottom: 15, //  Réduit l'espacement pour économiser de la place
+    marginBottom: 15,
     paddingHorizontal: 15,
   },
   input: {
@@ -180,19 +173,17 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF',
-    height: 60, //  Taille plus petite pour économiser de l'espace
-    width: 60, 
+    height: 60,
+    width: 60,
     borderRadius: 30,
-    alignItems: 'center', 
+    alignItems: 'center',
     justifyContent: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 10,
-    marginTop: 20, // Ajout d'une marge pour éviter l'écrasement
+    justifyContent: 'center',
+    marginTop: 20,
   },
-  
 });
 
 export default RegisterScreen;

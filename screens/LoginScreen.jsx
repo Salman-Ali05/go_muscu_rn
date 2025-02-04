@@ -35,7 +35,7 @@ const LoginScreen = ({ navigation }) => {
     <KeyboardAvoidingView
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
     style={styles.container}
-  >
+  > 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.titleContainer}>
