@@ -17,7 +17,7 @@ const RegisterScreen = () => {
   const [birthdate, setBirthdate] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => setDatePickerVisibility(true);
+  const showDatePicker = () => setDatePickerVisibility(true); 
   const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (date) => {
