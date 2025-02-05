@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Image, View, Text, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
+import { useUser } from '../context/UserContext';
+
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // const { t } = useTranslation();
+  const { setUser, setToken } = useUser();
 
   const handleLogin = async () => {
     try {
@@ -23,6 +25,8 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.ok) {
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
+        setUser(data.user);
+        setToken(data.token);
         navigation.navigate("Home");
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la connexion');

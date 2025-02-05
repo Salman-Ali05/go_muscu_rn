@@ -3,22 +3,34 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../context/UserContext';
 
 const HomeScreen = () => {
 
     const programs = [1, 2, 3, 4];
     const navigation = useNavigation();
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.title}>
-                    <Text style={styles.titleText}>Acceuil</Text>
-                </View>
-                <TouchableOpacity style={styles.photo} onPress={() => navigation.navigate('Profile')}>
-                    <Icon name="account-circle" size={50} color="#B8B8FF" />
-                </TouchableOpacity>
+    const { token, user } = useUser();
+
+    console.log(token, user);
+
+  return (
+    <View style={styles.container}>
+        <View style={styles.header}>
+            <View style={styles.title}>
+                <Text style={styles.titleText}>Acceuil</Text>
             </View>
+            <View style={styles.photo}>
+            <TouchableOpacity style={styles.photo} onPress={() => navigation.navigate('Profile')}>
+                <Icon name="account-circle" size={50} color="#B8B8FF" />
+            </TouchableOpacity>
+            </View>
+        </View>
+        
+        <View style={styles.container_bienvenue}>
+            <Text>Bonjour {user.name}</Text>
+            <Text>Projet : Prise de masse</Text>
+        </View>
 
             <View style={styles.container_bienvenue}>
                 <Text>Bonjour Ianis</Text>
