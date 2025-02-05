@@ -36,31 +36,36 @@ const RegisterProgramScreen = ({ navigation }) => {
     fetchPrograms();
   }, []);
 
-  const handleRegister = async () => {
-    if (!selectedGoal) {
-      Alert.alert('Erreur', 'Veuillez sélectionner un objectif.');
-      return;
+ const handleRegister = async () => {
+  if (!selectedGoal) {
+    Alert.alert('Erreur', 'Veuillez sélectionner un objectif.');
+    return;
+  }
+
+  setUserData({ programID: selectedGoal });
+
+  try {
+    const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
+    });
+
+    const responseData = await response.json(); // Convertir la réponse en JSON
+
+    if (response.ok) {
+      Alert.alert('Succès', 'Inscription réussie !');
+      navigation.navigate('Home');
+    } else if (response.status === 400) { 
+      Alert.alert('Erreur', 'Ce compte existe déjà.');
+    } else {
+      Alert.alert('Erreur', responseData.message || 'Échec de l’inscription.');
     }
+  } catch (error) {
+    Alert.alert('Erreur', 'Problème de connexion.');
+  }
+};
 
-    setUserData({ programID: selectedGoal });
-
-    try {
-      const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
-      });
-
-      if (response.ok) {
-        Alert.alert('Succès', 'Inscription réussie !');
-        navigation.navigate('Home');
-      } else {
-        Alert.alert('Erreur', 'Échec de l’inscription.');
-      }
-    } catch (error) {
-      Alert.alert('Erreur', 'Problème de connexion.');
-    }
-  };
 
   return (
     <View style={styles.container}>
