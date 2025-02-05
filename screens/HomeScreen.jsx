@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
@@ -45,29 +45,25 @@ const HomeScreen = () => {
             </View>
         </View>
         
+
         <View style={styles.container_bienvenue}>
-            <Text>Bonjour {user.name}</Text>
+            <Text>Bonjour Ianis</Text>
             <Text>Projet : Prise de masse</Text>
         </View>
 
-            <View style={styles.container_bienvenue}>
-                <Text>Bonjour Ianis</Text>
-                <Text>Projet : Prise de masse</Text>
-            </View>
-
-            <View style={styles.container_for_program}>
-                <View style={styles.container_program}>
-                    <View style={styles.grid}>
-                        {programs.map((item, index) => (
-                            <View key={index} style={styles.box}>
-                                <Text>{`Box ${item}`}</Text>
-                            </View>
-                        ))}
-                    </View>
+        <View style={styles.container_for_program}>
+            <View style={styles.container_program}>
+                <View style={styles.grid}>
+                    {programs.map((item, index) => (
+                        <View key={index} style={styles.box}>
+                            <Text>{`Box ${item}`}</Text>
+                        </View>
+                    ))}
                 </View>
             </View>
-            <Navbar></Navbar>
         </View>
+        <Navbar></Navbar>
+    </View>
     );
 };
 

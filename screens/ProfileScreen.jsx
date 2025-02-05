@@ -35,7 +35,7 @@ const ProfileScreen = () => {
             </View>
 
             <View style={styles.actions}>
-                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Personal')}>
+                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('PersonnalInfo')}>
                     <Text style={styles.actionText}>Modifier Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
