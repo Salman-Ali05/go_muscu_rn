@@ -2,8 +2,12 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-n
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
+
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
 
@@ -31,7 +35,7 @@ const ProfileScreen = () => {
             </View>
 
             <View style={styles.actions}>
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Personal')}>
                     <Text style={styles.actionText}>Modifier Profil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
