@@ -51,9 +51,10 @@ const RegisterProgramScreen = ({ navigation }) => {
       body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
     });
 
-    const responseData = await response.json(); // Convertir la réponse en JSON
+    const responseData = await response.json(); 
 
     if (response.ok) {
+      setUserData({name, email});
       Alert.alert('Succès', 'Inscription réussie !');
       navigation.navigate('Home');
     } else if (response.status === 400) { 
