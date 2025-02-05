@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
-import useSignupStore from '../store/UseSignUpStore';
+import { useUser } from '../context/UserContext';
 
 const HomeScreen = () => {
 
     const programs = [1,2,3,4];
 
-    const {name} = useSignupStore();
+    const { token, user } = useUser();
+
+    console.log(token, user);
 
   return (
     <View style={styles.container}>
@@ -22,8 +24,8 @@ const HomeScreen = () => {
         </View>
         
         <View style={styles.container_bienvenue}>
-            <Text>Bonjour, {name}</Text>
-            <Text></Text>
+            <Text>Bonjour {user.name}</Text>
+            <Text>Projet : Prise de masse</Text>
         </View>
 
         <View style={styles.container_for_program}>
