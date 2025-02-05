@@ -107,7 +107,7 @@ const RegisterProgramScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  title: { fontSize: 64, fontWeight: '400', color: '#B8B8FF', marginTop: 30 },
+  title: { fontSize: 64, fontWeight: '400', color: '#B8B8FF', marginTop: 30, marginLeft:50 },
   title2: { fontSize: 64, fontWeight: '400', color: '#414144' },
   container_for_program: { justifyContent: 'center', alignItems: 'center', flex: 1 },
   container_program: {
