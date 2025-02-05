@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { Image, View, Text, Button, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
 
 const LoginScreen = ({ navigation }) => {
@@ -33,63 +33,63 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
-    style={styles.container}
-  > 
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>
-          Go<Text style={styles.title2}>Muscu</Text>
-        </Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
-      </View>
-      <View style={styles.contentWrapper}>
-        
-        {/* Champ Email */}
-        <View style={styles.inputContainer}>
-          <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#e6e7e7"
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>
+              <Text>Go</Text><Text style={styles.title2}>Muscu</Text>
+            </Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
+          </View>
+          <View style={styles.contentWrapper}>
 
-        {/* Champ Mot de passe */}
-        <View style={styles.inputContainer}>
-          <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />
-          <TextInput
-            placeholder="Mot de passe"
-            placeholderTextColor="#e6e7e7"
-            secureTextEntry
-            style={styles.input}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
+            {/* Champ Email */}
+            <View style={styles.inputContainer}>
+              <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="#e6e7e7"
+                style={styles.input}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              />
+            </View>
 
-        <Text style={styles.subContent}>
-          Pas de compte ?{' '}
-          <Text
-            style={styles.subContent2}
-            onPress={() => navigation.navigate('Register')}
-          >
-            Créez-en un ici
-          </Text>
-        </Text>
-        <View style={styles.footerContainer}>
-          <TouchableOpacity style={styles.buttonStyle}>
-            <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin}/>
-          </TouchableOpacity>
+            {/* Champ Mot de passe */}
+            <View style={styles.inputContainer}>
+              <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />
+              <TextInput
+                placeholder="Mot de passe"
+                placeholderTextColor="#e6e7e7"
+                secureTextEntry
+                style={styles.input}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
+
+            <Text style={styles.subContent}>
+              Pas de compte ?{' '}
+              <Text
+                style={styles.subContent2}
+                onPress={() => navigation.navigate('Register')}
+              >
+                Créez-en un ici
+              </Text>
+            </Text>
+            <View style={styles.footerContainer}>
+              <TouchableOpacity style={styles.buttonStyle}>
+                <Icon name="login" size={30} color="#e6e7e7" style={styles.icon} onPress={handleLogin} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF', // Couleur de fond
-    height: 70, 
-    width: 70, 
+    height: 70,
+    width: 70,
     borderRadius: 35,
     display: 'flex',
     justifyContent: 'center',
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
     gap: 20,
     marginTop: 20,
   },
-  Image:{
-    width: 300, 
-    height: 250, 
-    objectFit: 'contain', 
+  Image: {
+    width: 300,
+    height: 250,
+    objectFit: 'contain',
   }
 });
 
