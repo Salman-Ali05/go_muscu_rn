@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
-import useSignupStore from '../store/UseSignUpStore';
-
+import { useUser } from '../context/UserContext';
+import { useState } from 'react';
 const HomeScreen = () => {
 
     const programs = [1,2,3,4];
+    const [program, setProgram] = useState(null);
 
-    const {name} = useSignupStore();
+    const { token, user } = useUser();
+
+    console.log(user.programID);
+
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        fetch(`https://go-muscu-api-seven.vercel.app/api/programs?id=${user?.programID}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            console.log(response);
+            if (response.ok) {
+                setProgram(response.json());
+            }
+            throw new Error('Impossible de récupérer le programme');
+        })
+    }, [user])
 
   return (
     <View style={styles.container}>
@@ -22,8 +42,8 @@ const HomeScreen = () => {
         </View>
         
         <View style={styles.container_bienvenue}>
-            <Text>Bonjour, {name}</Text>
-            <Text></Text>
+            <Text>Bonjour {user.name}</Text>
+            <Text>Projet : Prise de masse</Text>
         </View>
 
         <View style={styles.container_for_program}>

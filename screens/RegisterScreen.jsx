@@ -6,7 +6,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import useSignupStore from '../store/UseSignUpStore'; // ✅ Utilisation de Zustand pour stocker les données
 import { useNavigation } from '@react-navigation/native';
-
+import { FieldComponent } from '../components/FieldComponent';
+import { TouchableButton } from '../components/TouchableButton';
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const setUserData = useSignupStore((state) => state.setUserData);
@@ -55,41 +56,34 @@ const RegisterScreen = () => {
         <Image source={require('../assets/muscuImg.png')} style={styles.image} />
 
         {/*  Champ Nom */}
-        <View style={styles.inputContainer}>
-          <Icon name="person" size={20} color="#e6e7e7" style={styles.icon} />  
-          <TextInput
-            placeholder="Nom d'utilisateur"
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholderTextColor="#e6e7e7"
-          />
-        </View>
+        <FieldComponent 
+          iconName="person"
+          placeholder="Nom d'utilisateur"
+          secureTextEntry={false}
+          value={name}
+          onChangeText={setName}
+          height={50}
+        />
 
         {/* Champ Email */}
-        <View style={styles.inputContainer}>
-          <Icon name="email" size={20} color="#e6e7e7" style={styles.icon} />  
-          <TextInput
-            placeholder="Email"
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholderTextColor="#e6e7e7"
-          />
-        </View>
+        <FieldComponent 
+          iconName="email"
+          placeholder="Email"
+          secureTextEntry={false}
+          value={email}
+          onChangeText={setEmail}
+          height={50}
+        />
 
         {/*  Champ Mot de passe */}
-        <View style={styles.inputContainer}>   
-          <Icon name="lock" size={20} color="#e6e7e7" style={styles.icon} />   
-          <TextInput
-            placeholder="Mot de passe"
-            secureTextEntry
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            placeholderTextColor="#e6e7e7"
-          />
-        </View>
+        <FieldComponent 
+          iconName="lock"
+          placeholder="Mot de passe"
+          secureTextEntry={false}
+          value={password}
+          onChangeText={setPassword}
+          height={50}
+        />
 
         {/* Champ Date de naissance */}
         <View style={styles.inputContainer}>
@@ -114,11 +108,7 @@ const RegisterScreen = () => {
         />
 
         {/* Bouton Suivant */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle} onPress={handleNextStep}>
-            <Icon name="arrow-forward" size={30} color="#e6e7e7" />
-          </TouchableOpacity>
-        </View>
+        <TouchableButton iconName='arrow-forward' onPress={handleNextStep} />
       </ScrollView>
     </View>
   );
