@@ -47,7 +47,7 @@ const HomeScreen = () => {
         
 
         <View style={styles.container_bienvenue}>
-            <Text>Bonjour Ianis</Text>
+            <Text>Bonjour {user.name}</Text>
             <Text>Projet : Prise de masse</Text>
         </View>
 
