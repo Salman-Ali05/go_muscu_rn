@@ -1,36 +1,36 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Import des icônes
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Navbar = () => {
-    return(
-
+    const navigation = useNavigation();
+    return (
         <View style={styles.contain_nav}>
             <View style={styles.target_icon}>
-                <Image source={require('../assets/target.png')} style={styles.image}/>
+                <Image source={require('../assets/target.png')} style={styles.image} />
             </View>
-            <View style={styles.home_icon}>  
+            <TouchableOpacity style={styles.home_icon} onPress={() => navigation.navigate('Home')}>
                 <Image source={require('../assets/home.png')} style={styles.image} />
-            </View>
-
+            </TouchableOpacity>
         </View>
-
     );
 };
 
 const styles = StyleSheet.create({
     contain_nav: {
-        width:"100%",
-        height: "10%",
-        // backgroundColor:"blue",
+        width: "100%",
+        height: 60, // Hauteur fixe pour la navbar
+        position: "absolute",
+        bottom: 0, // Toujours en bas
         flexDirection: "row",
-        justifyContent: "space-around"
-      },
+        justifyContent: "space-around",
+        alignItems: "center", // Centrer verticalement les icônes
+    },
 
-      image:{
-        width:40,
-        height:40
-      }
-})
+    image: {
+        width: 40,
+        height: 40
+    }
+});
 
 export default Navbar;

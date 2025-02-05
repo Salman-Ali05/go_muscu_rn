@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Image, View, Text, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
@@ -38,52 +39,52 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
-    style={styles.container}
-  > 
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>
-          Go<Text style={styles.title2}>Muscu</Text>
-        </Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
-      </View>
-      <View style={styles.contentWrapper}>
-        
-        {/* Champ Email */}
-        <FieldComponent 
-          iconName="email"
-          placeholder="Email"
-          secureTextEntry={false}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-
-        {/* Champ Mot de passe */}
-        <FieldComponent 
-          iconName="lock"
-          placeholder="Mot de passe"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-
-        <Text style={styles.subContent}>
-          Pas de compte ?{' '}
-          <Text
-            style={styles.subContent2}
-            onPress={() => navigation.navigate('Register')}
-          >
-            Créez-en un ici
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
+      style={styles.container}
+    > 
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>
+            Go<Text style={styles.title2}>Muscu</Text>
           </Text>
-        </Text>
-        <TouchableButton iconName='login' onPress={handleLogin} />
+        </View>
+        <View style={styles.imageContainer}>
+          <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
+        </View>
+        <View style={styles.contentWrapper}>
+
+          {/* Champ Email */}
+          <FieldComponent 
+            iconName="email"
+            placeholder="Email"
+            secureTextEntry={false}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+
+          {/* Champ Mot de passe */}
+          <FieldComponent 
+            iconName="lock"
+            placeholder="Mot de passe"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+
+          <Text style={styles.subContent}>
+            Pas de compte ?{' '}
+            <Text
+              style={styles.subContent2}
+              onPress={() => navigation.navigate('Register')}
+            >
+              Créez-en un ici
+            </Text>
+          </Text>
+          <TouchableButton iconName='login' onPress={handleLogin} />
+        </View>
       </View>
-    </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
@@ -143,8 +144,8 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#B8B8FF', // Couleur de fond
-    height: 70, 
-    width: 70, 
+    height: 70,
+    width: 70,
     borderRadius: 35,
     display: 'flex',
     justifyContent: 'center',
@@ -158,10 +159,10 @@ const styles = StyleSheet.create({
     gap: 20,
     marginTop: 20,
   },
-  Image:{
-    width: 300, 
-    height: 250, 
-    objectFit: 'contain', 
+  Image: {
+    width: 300,
+    height: 250,
+    objectFit: 'contain',
   }
 });
 

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
+import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../context/UserContext';
 import { useState } from 'react';
 const HomeScreen = () => {
 
+    const navigation = useNavigation();
     const programs = [1,2,3,4];
     const [program, setProgram] = useState(null);
 
@@ -37,10 +39,13 @@ const HomeScreen = () => {
                 <Text style={styles.titleText}>Acceuil</Text>
             </View>
             <View style={styles.photo}>
-            <Icon name="account-circle" size={50} color="#B8B8FF" />
+            <TouchableOpacity style={styles.photo} onPress={() => navigation.navigate('Profile')}>
+                <Icon name="account-circle" size={50} color="#B8B8FF" />
+            </TouchableOpacity>
             </View>
         </View>
         
+
         <View style={styles.container_bienvenue}>
             <Text>Bonjour {user.name}</Text>
             <Text>Projet : Prise de masse</Text>
@@ -48,63 +53,63 @@ const HomeScreen = () => {
 
         <View style={styles.container_for_program}>
             <View style={styles.container_program}>
-                    <View style={styles.grid}>
-                        {programs.map((item, index) => (
-                            <View key={index} style={styles.box}>
-                                <Text>{`Box ${item}`}</Text>
-                            </View>
-                        ))}
-                    </View>
+                <View style={styles.grid}>
+                    {programs.map((item, index) => (
+                        <View key={index} style={styles.box}>
+                            <Text>{`Box ${item}`}</Text>
+                        </View>
+                    ))}
+                </View>
             </View>
         </View>
-            <Navbar></Navbar>
+        <Navbar></Navbar>
     </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
+    container: {
+        flex: 1,
         // backgroundColor: "red"
     },
-    
-    header:{
-        height:"10%",
-        width:"100%",
+
+    header: {
+        height: "10%",
+        width: "100%",
         // backgroundColor:"blue",
-        marginTop:"30%",
+        marginTop: "30%",
         flexWrap: "wrap",
-        flexDirection:"row",
-        justifyContent:"space-between"
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
-    titleText:{
+    titleText: {
         fontSize: 40,
     },
-    title:{
-        height:"80%",
-        width:"50%",
+    title: {
+        height: "80%",
+        width: "50%",
         // backgroundColor:"yellow",
         marginLeft: 20,
     },
-    photo:{
-        height:"80%",
-        width:"30%",
+    photo: {
+        height: "80%",
+        width: "30%",
         // backgroundColor:"brown",
-        alignItems:"center"
+        alignItems: "center"
     },
 
-    container_for_program:{
-        justifyContent:"center",
-        alignItems:"center",
-        flex:1
+    container_for_program: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1
     },
 
-    container_program:{
-        height:"70%",
-        width:"100%",
+    container_program: {
+        height: "70%",
+        width: "100%",
         // backgroundColor:"blue",
-        alignItems:'center',
-        justifyContent:'center',
+        alignItems: 'center',
+        justifyContent: 'center',
         marginBottom: "20%"
     },
 
@@ -115,29 +120,29 @@ const styles = StyleSheet.create({
         flexWrap: "wrap", // Retour à la ligne pour 2 colonnes
         justifyContent: "space-between", // Espace uniforme entre les colonnes
         // backgroundColor:"red",
-      },
-      box: {
+    },
+    box: {
         width: "45%", // Largeur de chaque boîte (ajustée pour 2 colonnes)
-        height:"50%",
+        height: "50%",
         backgroundColor: "#B8B8FF",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10, // Coins arrondis
         marginVertical: 10, // Espacement vertical entre les lignes
-     
-      },
 
-      container_bienvenue:{
+    },
+
+    container_bienvenue: {
         marginLeft: 20
-      },
+    },
 
-      contain_nav: {
-        width:"100%",
+    contain_nav: {
+        width: "100%",
         height: "10%",
-        backgroundColor:"blue",
+        backgroundColor: "blue",
         flexDirection: "row",
         justifyContent: "space-around"
-      }
+    }
 });
 
 export default HomeScreen;
