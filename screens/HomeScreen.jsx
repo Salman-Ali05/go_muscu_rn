@@ -2,10 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Navbar from '../components/Navbar';
+import useSignupStore from '../store/UseSignUpStore';
 
 const HomeScreen = () => {
 
     const programs = [1,2,3,4];
+
+    const {name} = useSignupStore();
 
   return (
     <View style={styles.container}>
@@ -19,8 +22,8 @@ const HomeScreen = () => {
         </View>
         
         <View style={styles.container_bienvenue}>
-            <Text>Bonjour Ianis</Text>
-            <Text>Projet : Prise de masse</Text>
+            <Text>Bonjour, {name}</Text>
+            <Text></Text>
         </View>
 
         <View style={styles.container_for_program}>
