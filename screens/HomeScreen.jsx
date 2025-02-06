@@ -5,30 +5,69 @@ import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../context/UserContext';
 import { useState } from 'react';
-
-const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs';
+import { ScrollView } from 'react-native';
+import { Image } from 'react-native';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const [programs, setPrograms] = useState(null);
+  const [program, setProgram] = useState(null);
 
-  const { user } = useUser();
+  const { user, token } = useUser();
 
-  const fetchPrograms = async () => {
-    try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      setPrograms(data);
-    } catch (error) {
-      Alert.alert('Erreur', 'Impossible de récupérer les programmes.');
+  const id = user.programID;
+
+  const [expanded, setExpanded] = useState({});
+
+    const toggleExpand = (id) => {
+        setExpanded((prev) => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
+    };
+
+    const imageMap = {
+        '../assets/triceps_skull.jpg': require('../assets/triceps_skull.jpg'),
+        '../assets/jambes_squat.jpg': require('../assets/jambes_squat.jpg'),
+        '../assets/epaules_dev.jpg': require('../assets/epaules_dev.jpg'),
+        '../assets/dos_tractions.jpg': require('../assets/dos_tractions.jpg'),
+        '../assets/dos_rowing.jpg': require('../assets/dos_rowing.jpg'),
+        '../assets/pect_coucher.jpg': require('../assets/pect_coucher.jpg'),
+        '../assets/jambes_mollets.jpg': require('../assets/jambes_mollets.jpg'),
+        '../assets/triceps_poulie.jpg': require('../assets/triceps_poulie.jpg'),
+        '../assets/bicep_hammer.jpg': require('../assets/bicep_hammer.jpg'),
+        '../assets/dos_rowing.jpg': require('../assets/dos_rowing.jpg'),
+        '../assets/dos_tractions.jpg': require('../assets/dos_tractions.jpg'),
+        '../assets/epaules_lateral.jpg': require('../assets/epaules_lateral.jpg'),
+        '../assets/epaules_dev.jpg': require('../assets/epaules_dev.jpg'),
+      };
+
+  async function fetchProgram() {
+    if (!user || !id) {
+        return;
     }
-  };
 
-  useEffect(() => {
-    fetchPrograms();
-  }, []);
+    try {
+        const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/programs/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${token}`,
+            },
+        });
 
-  const selectedProgram = programs?.find((item) => item._id === user.programID)?.name;
+        if (!response.ok) {
+            throw new Error('Failed to fetch program');
+        }
+
+        const data = await response.json();
+        setProgram(data);
+    } catch (error) {
+        console.error('Error fetching program:', error);
+    }
+  }
+
+  useEffect(() => {    
+    fetchProgram();
+  }, [id]);
 
   return (
     <View style={styles.container}>
@@ -46,22 +85,47 @@ const HomeScreen = () => {
 
       <View style={styles.container_bienvenue}>
         <Text>Bonjour {user.name}</Text>
-        <Text>Projet : {selectedProgram}</Text>
+       <Text>Projet : {program.name}</Text>
       </View>
 
-      <View style={styles.container_for_program}>
-          <View style={styles.container_program}>
-              <View style={styles.grid}>
-                {programs?.length > 0 ? programs.map((item) => (
-                  <TouchableOpacity key={item._id} style={styles.box} onPress={() => navigation.navigate('Exercices', { id: item?._id })}>
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
-                )) : (
-                  <Text>Pas de programme</Text>
-                )}
-              </View>
-          </View>
-      </View>
+      <ScrollView contentContainerStyle={{ paddingTop: 20 }}>
+        <View style={styles.container_for_program}>
+            <View style={styles.container_program}>
+                <View style={styles.grid}>
+                    {program?.exercises?.length > 0 ? (
+                        program.exercises.map((ex) => {
+                            const id = ex._id;
+
+                            return (
+                                <TouchableOpacity key={id} onPress={() => toggleExpand(id)}>
+                                    <View style={styles.box}>
+                                        <View style={styles.boxTitle}>
+                                            <Text>{ex.name}</Text>
+                                            <Icon name={expanded[id] ? 'chevron-up' : 'chevron-down'} size={24} />
+                                        </View>
+
+                                        {expanded[id] && (
+                                            <View style={styles.boxContent}>
+                                                <Image source={imageMap[ex.image]} style={styles.exoImg} />
+                                                <View style={styles.exoContent}>
+                                                    <Text>Séries : 4</Text>
+                                                    <Text>Répétitions : {program.nbRep}</Text>
+                                                    <Text>Repos : {program.rest}</Text>
+                                                    <Text>Conseil : {ex.advice}</Text>
+                                                </View>
+                                            </View>
+                                        )}
+                                    </View>
+                                </TouchableOpacity>
+                            );
+                        })
+                    ) : (
+                        <Text>Pas d'exercices disponibles</Text>
+                    )}
+                </View>
+            </View>
+        </View>
+    </ScrollView>
       <Navbar />
     </View>
     );
@@ -69,66 +133,94 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+      flex: 1,
   },
   header: {
-    height: "10%",
-    width: "100%",
-    marginTop: "30%",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "space-between"
+      height: "10%",
+      width: "100%",
+      marginTop: "30%",
+      flexWrap: "wrap",
+      flexDirection: "row",
+      justifyContent: "space-between"
   },
   titleText: {
-    fontSize: 40,
+      fontSize: 40,
   },
   title: {
-    height: "80%",
-    width: "50%",
-    marginLeft: 20,
+      height: "80%",
+      width: "50%",
+      marginLeft: 20,
   },
   photo: {
-    height: "80%",
-    width: "30%",
-    alignItems: "center"
+      height: "80%",
+      width: "30%",
+      alignItems: "center"
   },
   container_for_program: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
+      justifyContent: "center",
+      alignItems: "center",
+      flex: 1
   },
   container_program: {
-    height: "70%",
-    width: "100%",
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: "20%"
+      height: "70%",
+      width: "100%",
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: "20%"
   },
+
   grid: {
-    width: "90%",
-    height: "60%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+      width: "90%",
+      flexGrow: 1,
+      flexDirection: "column",
   },
   box: {
-    width: "45%",
-    height: "50%",
-    backgroundColor: "#B8B8FF",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    marginVertical: 10,
+      display: "flex",
+      flexDirection: 'column',
+      width: "100%",
+      backgroundColor: "#B8B8FF",
+      borderRadius: 10,
+      marginVertical: 10,
+      gap: 10
   },
   container_bienvenue: {
-    marginLeft: 20
+      marginTop: 100,
+      marginLeft: 20,
   },
   contain_nav: {
-    width: "100%",
-    height: "10%",
-    backgroundColor: "blue",
-    flexDirection: "row",
-    justifyContent: "space-around"
+      width: "100%",
+      height: "10%",
+      backgroundColor: "blue",
+      flexDirection: "row",
+      justifyContent: "space-around",
+  },
+  exoImg: {
+      width: 100,
+      height: 100,
+      resizeMode: 'contain',
+  },
+  boxTitle: {
+      display: "flex",
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 10,
+      backgroundColor: "#9381FF",
+      height: 50,
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+  },
+  boxContent: {
+      paddingHorizontal: 20,
+      display: 'flex',
+      flexDirection: 'row',
+      marginBottom: 10,
+  },
+  exoContent: {
+      display: "flex",
+      flexDirection: 'column',
+      marginLeft: 10,
+      width: '65%',
+      gap: 10,
   }
 });
 
