@@ -4,12 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 
 const Navbar = () => {
     const navigation = useNavigation();
+
+    const nextHome = () => {
+        navigation.navigate("Home");
+    }
+
+    const nextStats = () => {
+        navigation.navigate("Statistics");
+    }
     return (
         <View style={styles.contain_nav}>
-            <View style={styles.target_icon}>
-                <Image source={require('../assets/target.png')} style={styles.image} />
-            </View>
-            <TouchableOpacity style={styles.home_icon} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.target_icon} onPress={nextStats}>
+                <Image source={require('../assets/target.png')} style={styles.image}  />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.home_icon} onPress={nextHome}>
                 <Image source={require('../assets/home.png')} style={styles.image} />
             </TouchableOpacity>
         </View>
