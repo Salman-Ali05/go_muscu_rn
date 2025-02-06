@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import useSignupStore from '../store/UseSignUpStore';
 import ProgramCard from '../components/ProgramBox';
+import { useUser } from '../context/UserContext';
 
 const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs';
 
 const RegisterProgramScreen = ({ navigation }) => {
   const { name, email, password, birthdate, setUserData } = useSignupStore();
+  const { setUser } = useUser();
+
   const [programs, setPrograms] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,37 +38,42 @@ const RegisterProgramScreen = ({ navigation }) => {
     fetchPrograms();
   }, []);
 
- const handleRegister = async () => {
-  if (!selectedGoal) {
-    Alert.alert('Erreur', 'Veuillez sélectionner un objectif.');
-    return;
-  }
-
-  setUserData({ programID: selectedGoal });
-
-  try {
-    const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
-    });
-
-    const responseData = await response.json(); 
-
-    if (response.ok) {
-      setUserData({name, email});
-      Alert.alert('Succès', 'Inscription réussie !');
-      navigation.navigate('Home');
-    } else if (response.status === 400) { 
-      Alert.alert('Erreur', 'Ce compte existe déjà.');
-    } else {
-      Alert.alert('Erreur', responseData.message || 'Échec de l’inscription.');
+  const handleRegister = async () => {
+    if (!selectedGoal) {
+      Alert.alert('Erreur', 'Veuillez sélectionner un objectif.');
+      return;
     }
-  } catch (error) {
-    Alert.alert('Erreur', 'Problème de connexion.');
-  }
-};
 
+    setUserData({ programID: selectedGoal });
+
+    try {
+      const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
+      });
+
+      const responseData = await response.json(); 
+
+      if (response.ok) {
+        setUser({
+          name, 
+          email, 
+          password, 
+          birthdate, 
+          programID: selectedGoal,
+         });
+        Alert.alert('Succès', 'Inscription réussie !');
+        navigation.navigate('Home');
+      } else if (response.status === 400) { 
+        Alert.alert('Erreur', 'Ce compte existe déjà.');
+      } else {
+        Alert.alert('Erreur', responseData.message || 'Échec de l’inscription.');
+      }
+    } catch (error) {
+      Alert.alert('Erreur', 'Problème de connexion.');
+    }
+  };
 
   return (
     <View style={styles.container}>

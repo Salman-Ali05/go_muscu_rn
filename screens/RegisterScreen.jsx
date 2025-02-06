@@ -8,6 +8,7 @@ import useSignupStore from '../store/UseSignUpStore'; // ✅ Utilisation de Zust
 import { useNavigation } from '@react-navigation/native';
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
+import { useUser } from '../context/UserContext';
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const setUserData = useSignupStore((state) => state.setUserData);
@@ -17,6 +18,7 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const { setUser, setToken } = useUser();
 
   const showDatePicker = () => setDatePickerVisibility(true); 
   const hideDatePicker = () => setDatePickerVisibility(false);
@@ -33,6 +35,14 @@ const RegisterScreen = () => {
       return;
     }
 
+    setUser({ 
+      name, 
+      email, 
+      password, 
+      birthdate
+    });
+
+    console.log(name)
     // Stocker les données temporairement avec Zustand
     setUserData({ name, email, password, birthdate });
 
