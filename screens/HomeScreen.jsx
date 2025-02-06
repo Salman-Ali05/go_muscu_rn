@@ -25,7 +25,6 @@ const HomeScreen = () => {
         }).then(response => {
             if (response.ok) {
                 setProgram(response.json());
-                console.log(response);
             }
             throw new Error('Impossible de récupérer le programme');
         })
@@ -47,7 +46,7 @@ const HomeScreen = () => {
 
         <View style={styles.container_bienvenue}>
             <Text>Bonjour {user.name}</Text>
-            <Text>Projet : {user.program}</Text>
+            <Text>Projet : {program._j.name}</Text>
         </View>
 
         <View style={styles.container_for_program}>
