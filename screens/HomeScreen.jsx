@@ -85,7 +85,7 @@ const HomeScreen = () => {
 
       <View style={styles.container_bienvenue}>
         <Text>Bonjour {user.name}</Text>
-       <Text>Projet : {program.name}</Text>
+       <Text>Projet : {program && program.name}</Text>
       </View>
 
       <ScrollView contentContainerStyle={{ paddingTop: 20 }}>
