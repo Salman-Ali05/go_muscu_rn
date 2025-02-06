@@ -3,10 +3,18 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../context/UserContext';
 
 const ProfileScreen = () => {
 
+    const { user, setUser } = useUser();
+
     const navigation = useNavigation();
+
+    const handleDisconnect = () => {
+        setUser(null);
+        navigation.navigate('Login');
+    }
 
     return (
         <View style={styles.container}>
@@ -23,8 +31,8 @@ const ProfileScreen = () => {
 
             <View style={styles.userInfo}>
                 <Image style={styles.profileImage} />
-                <Text style={styles.userName}>Bonjour, Ianis</Text>
-                <Text style={styles.userEmail}>ianis@example.com</Text>
+                <Text style={styles.userName}>Bonjour, {user.name}</Text>
+                <Text style={styles.userEmail}>{user.email}</Text>
             </View>
 
             <View style={styles.stats}>
@@ -40,6 +48,9 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
                     <Text style={styles.actionText}>Voir Statistiques</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.decoButton} onPress={handleDisconnect}>
+                    <Text style={styles.decoText}>Déconnexion</Text>
                 </TouchableOpacity>
             </View>
 
@@ -125,8 +136,19 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         alignItems: 'center',
     },
+    decoButton: {
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: '#c5322b29',
+    },
     actionText: {
         color: '#FFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    decoText: {
+        color: '#c5322b',
         fontSize: 16,
         fontWeight: 'bold',
     },

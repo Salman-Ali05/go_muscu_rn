@@ -13,20 +13,19 @@ const HomeScreen = () => {
 
     const { token, user } = useUser();
 
-    console.log(user.programID);
 
     useEffect(() => {
         if (!user) {
             return;
         }
-        fetch(`https://go-muscu-api-seven.vercel.app/api/programs?id=${user?.programID}`, {
+        fetch(`https://go-muscu-api-seven.vercel.app/api/programs/${user.programID}`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `${token}`
             }
         }).then(response => {
-            console.log(response);
             if (response.ok) {
                 setProgram(response.json());
+                console.log(response);
             }
             throw new Error('Impossible de récupérer le programme');
         })
@@ -48,7 +47,7 @@ const HomeScreen = () => {
 
         <View style={styles.container_bienvenue}>
             <Text>Bonjour {user.name}</Text>
-            <Text>Projet : Prise de masse</Text>
+            <Text>Projet : {user.program}</Text>
         </View>
 
         <View style={styles.container_for_program}>

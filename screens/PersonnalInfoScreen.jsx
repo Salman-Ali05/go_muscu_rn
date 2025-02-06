@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -13,14 +13,27 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../context/UserContext'; // Contexte utilisateur
 
 const PersonnalInfoScreen = () => {
+    const { token, user, updateUser } = useUser(); // Récupérer et mettre à jour les infos utilisateur depuis le contexte
     const navigation = useNavigation();
+
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [birthDate, setBirthDate] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    // Charger les données utilisateur depuis le contexte
+    useEffect(() => {
+        if (user) {
+            setName(user.name || '');
+            setEmail(user.email || '');
+            setBirthDate(user.birthdate || '');
+        }
+    }, [user]);
 
     // Logique DatePicker
     const showDatePicker = () => setDatePickerVisibility(true);
@@ -32,13 +45,44 @@ const PersonnalInfoScreen = () => {
         hideDatePicker();
     };
 
-    const handleSave = () => {
-        if (!email || !oldPassword || !newPassword || !birthDate) {
-            Alert.alert('Erreur', 'Tous les champs sont obligatoires');
+    const handleSave = async () => {
+        if (!name || !email || !birthDate) {
+            Alert.alert('Erreur', 'Tous les champs sont obligatoires.');
             return;
         }
-        Alert.alert(email, oldPassword, newPassword, birthDate);
+
+        try {
+            // Préparer les données mises à jour
+            const updatedUser = {
+                name,
+                email,
+                birthdate: birthDate, // Assurez-vous que le champ correspond à celui attendu par le backend
+                ...(newPassword && { password: newPassword }), // Inclure le nouveau mot de passe uniquement s'il est modifié
+            };
+
+            const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/users/${user.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}` // Utilisation de Bearer pour l'authentification
+                },
+                body: JSON.stringify(updatedUser),
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                Alert.alert('Succès', 'Vos informations ont été mises à jour avec succès !');
+                navigation.navigate('Profile');
+            } else {
+                Alert.alert('Erreur', responseData.message || 'Une erreur est survenue lors de la mise à jour.');
+            }
+        } catch (error) {
+            Alert.alert('Erreur', 'Une erreur est survenue lors de la mise à jour.');
+            console.error(error);
+        }
     };
+
 
     return (
         <KeyboardAvoidingView
@@ -52,12 +96,20 @@ const PersonnalInfoScreen = () => {
                     </View>
 
                     <View style={styles.form}>
+                        {/* Champ Name */}
+                        <TextInput
+                            placeholder="Nom"
+                            style={styles.input}
+                            value={name}
+                            onChangeText={setName}
+                        />
+
                         {/* Champ Email */}
                         <TextInput
                             placeholder="Email"
                             style={styles.input}
                             value={email}
-                            onChangeText={(text) => setEmail(text)}
+                            onChangeText={setEmail}
                             keyboardType="email-address"
                         />
 
@@ -66,7 +118,7 @@ const PersonnalInfoScreen = () => {
                             placeholder="Ancien mot de passe"
                             style={styles.input}
                             value={oldPassword}
-                            onChangeText={(text) => setOldPassword(text)}
+                            onChangeText={setOldPassword}
                             secureTextEntry
                         />
 
@@ -75,7 +127,7 @@ const PersonnalInfoScreen = () => {
                             placeholder="Nouveau mot de passe"
                             style={styles.input}
                             value={newPassword}
-                            onChangeText={(text) => setNewPassword(text)}
+                            onChangeText={setNewPassword}
                             secureTextEntry
                         />
 
@@ -148,17 +200,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: 16,
         color: '#333',
-        justifyContent: 'center',
     },
     dateInput: {
-        height: 50,
-        backgroundColor: '#FFF',
-        borderColor: '#CCC',
-        borderWidth: 1,
-        borderRadius: 10,
-        paddingHorizontal: 15,
-        marginBottom: 20,
-        fontSize: 16,
         justifyContent: 'center',
     },
     dateText: {
