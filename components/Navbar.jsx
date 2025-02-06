@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center", // Centrer verticalement les icônes
+        backgroundColor: "#fff",
     },
 
     image: {

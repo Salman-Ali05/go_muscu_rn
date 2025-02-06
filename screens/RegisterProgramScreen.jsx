@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import useSignupStore from '../store/UseSignUpStore';
-import { useNavigation } from '@react-navigation/native';
 import ProgramCard from '../components/ProgramBox';
 
 const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs';
