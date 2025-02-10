@@ -6144,10 +6144,10 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
-react-native-data-picker@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-data-picker/-/react-native-data-picker-0.0.3.tgz#49c6ac41ac829f31b257e248dc257a94ec7ad0d3"
-  integrity sha512-e8WXq//tM2ubwVltJS7nSDVtgarvdHWhkgfu6YkWif5XNTWvV/7zv5dhtlmlRV4K8OPfXF+1XEo8JhvAKEhC5Q==
+react-native-date-picker@^5.0.10:
+  version "5.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-5.0.10.tgz#e3ff98dcdca5f88035cee9c133bd0be56e4dada9"
+  integrity sha512-W4AXcoFXXNFhG2fItRWp5UrgiU6PJM7bW06KDl+NeWPActSzunMQkQWjMuucOsrlyfCudTyV1n3hskHRGzDeow==
 
 react-native-drawer-layout@^4.1.1:
   version "4.1.1"

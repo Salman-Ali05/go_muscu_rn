@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
 import { 
-  Image, View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, ScrollView 
+  Image, View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import useSignupStore from '../store/UseSignUpStore'; // ✅ Utilisation de Zustand pour stocker les données
+import useSignupStore from '../store/UseSignUpStore';
 import { useNavigation } from '@react-navigation/native';
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
 import { useUser } from '../context/UserContext';
+
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const setUserData = useSignupStore((state) => state.setUserData);
+  const { setUser, setToken } = useUser();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const { setUser, setToken } = useUser();
 
   const showDatePicker = () => setDatePickerVisibility(true); 
   const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (date) => {
-    const formattedDate = date.toISOString().split('T')[0];
+    const formattedDate = date.toISOString().split('T')[0]; 
     setBirthdate(formattedDate);
     hideDatePicker();
   };
@@ -35,14 +36,8 @@ const RegisterScreen = () => {
       return;
     }
 
-    setUser({ 
-      name, 
-      email, 
-      password, 
-      birthdate
-    });
+    setUser({ name, email, password, birthdate });
 
-    console.log(name)
     // Stocker les données temporairement avec Zustand
     setUserData({ name, email, password, birthdate });
 
@@ -89,25 +84,19 @@ const RegisterScreen = () => {
         <FieldComponent 
           iconName="lock"
           placeholder="Mot de passe"
-          secureTextEntry={false}
+          secureTextEntry={true}  // Met true pour masquer le mot de passe
           value={password}
           onChangeText={setPassword}
           height={50}
         />
 
         {/* Champ Date de naissance */}
-        <View style={styles.inputContainer}>
+        <TouchableOpacity onPress={showDatePicker} style={styles.dateInputContainer}>
           <Icon name="calendar-today" size={20} color="#e6e7e7" style={styles.icon} />
-          <TouchableOpacity onPress={showDatePicker}>
-            <TextInput
-              style={styles.input}
-              placeholder="Date de naissance"
-              value={birthdate}
-              editable={false}
-              placeholderTextColor="#e6e7e7"
-            />
-          </TouchableOpacity>
-        </View>
+          <Text style={[styles.input, !birthdate && styles.placeholderText]}>
+            {birthdate ? birthdate : "Date de naissance"}
+          </Text>
+        </TouchableOpacity>
 
         {/* Modale DatePicker */}
         <DateTimePickerModal
@@ -155,7 +144,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: 10,
   },
-  inputContainer: {
+  dateInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#B8B8FF',
@@ -171,18 +160,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 10,
   },
-  buttonStyle: {
-    backgroundColor: '#B8B8FF',
-    height: 60,
-    width: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
+  placeholderText: {
+    color: '#e6e7e7',
   },
 });
 

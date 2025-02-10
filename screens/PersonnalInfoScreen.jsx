@@ -17,12 +17,11 @@ import { useNavigation } from '@react-navigation/native';
 const PersonnalInfoScreen = () => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
-    const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [birthDate, setBirthDate] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    // Logique DatePicker
+    // Gestion du DateTimePickerModal
     const showDatePicker = () => setDatePickerVisibility(true);
     const hideDatePicker = () => setDatePickerVisibility(false);
 
@@ -33,11 +32,11 @@ const PersonnalInfoScreen = () => {
     };
 
     const handleSave = () => {
-        if (!email || !oldPassword || !newPassword || !birthDate) {
+        if (!email || !newPassword || !birthDate) {
             Alert.alert('Erreur', 'Tous les champs sont obligatoires');
             return;
         }
-        Alert.alert(email, oldPassword, newPassword, birthDate);
+        Alert.alert('Succès', 'Vos informations ont été mises à jour !');
     };
 
     return (
@@ -57,20 +56,9 @@ const PersonnalInfoScreen = () => {
                             placeholder="Email"
                             style={styles.input}
                             value={email}
-                            onChangeText={(text) => setEmail(text)}
+                            onChangeText={setEmail}
                             keyboardType="email-address"
-                            placeholderTextColor={"#fff"}
-                        />
-
-                        {/* Champ Ancien mot de passe */}
-                        <TextInput
-                            placeholder="Ancien mot de passe"
-                            style={styles.input}
-                            value={oldPassword}
-                            onChangeText={(text) => setOldPassword(text)}
-                            secureTextEntry
-                            placeholderTextColor={"#fff"}
-                            
+                            placeholderTextColor={"#e6e7e7"}
                         />
 
                         {/* Champ Nouveau mot de passe */}
@@ -78,15 +66,15 @@ const PersonnalInfoScreen = () => {
                             placeholder="Nouveau mot de passe"
                             style={styles.input}
                             value={newPassword}
-                            onChangeText={(text) => setNewPassword(text)}
+                            onChangeText={setNewPassword}
                             secureTextEntry
-                            placeholderTextColor={"#fff"}
+                            placeholderTextColor={"#e6e7e7"}
                         />
 
                         {/* Champ Date de naissance */}
                         <TouchableOpacity onPress={showDatePicker}>
                             <View style={[styles.input, styles.dateInput]}>
-                            <Text style={[styles.dateText, !birthDate && { color: "#fff" }]}>   
+                                <Text style={[styles.dateText, !birthDate && { color: "#e6e7e7" }]}>
                                     {birthDate || "Date de naissance (JJ/MM/AAAA)"}
                                 </Text>
                             </View>
@@ -98,7 +86,6 @@ const PersonnalInfoScreen = () => {
                             mode="date"
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
-                            
                         />
 
                         {/* Bouton Sauvegarder */}
@@ -150,7 +137,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         marginBottom: 20,
         fontSize: 16,
-        color: '#333',
+        color: '#fff',
         justifyContent: 'center',
     },
     dateInput: {
@@ -160,20 +147,17 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: 16,
         justifyContent: 'center',
-        backgroundColor:'#B8B8FF',
-       
+        backgroundColor: '#B8B8FF',
     },
     dateText: {
-        color: '#fff',
         fontSize: 16,
     },
     saveButton: {
+        backgroundColor: '#B8B8FF',
         padding: 15,
         borderRadius: 10,
         alignItems: 'center',
         marginTop: 10,
-        borderWidth: 1,
-        borderColor: '#B8B8FF',
     },
     returnButton: {
         padding: 15,
@@ -184,7 +168,7 @@ const styles = StyleSheet.create({
         borderColor: '#B8B8FF',
     },
     saveButtonText: {
-        color: '#B8B8FF',
+        color: '#FFF',
         fontSize: 16,
         fontWeight: 'bold',
     },
