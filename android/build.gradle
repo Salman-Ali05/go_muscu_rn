@@ -2,12 +2,12 @@
 
 buildscript {
     ext {
-        buildToolsVersion = '33.0.2' // Assurez-vous que cette version est compatible avec votre SDK
         minSdkVersion = 24 // Valeur minimale supportée par la majorité des devices
-        compileSdkVersion = 34
+        compileSdkVersion = 35
         targetSdkVersion = 34
+        buildToolsVersion = "35.0.0"
         kotlinVersion = '1.9.10' // Assurez-vous que cette version correspond à celle supportée
-        ndkVersion = '23.1.7779620' // Ajustez si nécessaire
+        ndkVersion = '26.1.10909125' // Ajustez si nécessaire
     }
     repositories {
         google()
