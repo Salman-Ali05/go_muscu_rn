@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import useSignupStore from '../store/UseSignUpStore';
 import ProgramCard from '../components/ProgramBox';
 import { useUser } from '../context/UserContext';
 
 const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs';
 
 const RegisterProgramScreen = ({ navigation }) => {
-  const { name, email, password, birthdate, setUserData } = useSignupStore();
-  const { setUser } = useUser();
-
+  const { user, setUser } = useUser(); // Utilisation exclusive du contexte
   const [programs, setPrograms] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,28 +41,33 @@ const RegisterProgramScreen = ({ navigation }) => {
       return;
     }
 
-    setUserData({ programID: selectedGoal });
-
     try {
       const response = await fetch('https://go-muscu-api-seven.vercel.app/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, birthdate, programID: selectedGoal }),
+        body: JSON.stringify({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          birthdate: user.birthdate,
+          programID: selectedGoal,
+        }),
       });
 
-      const responseData = await response.json(); 
+      const responseData = await response.json();
 
       if (response.ok) {
-        setUser({
-          name, 
-          email, 
-          password, 
-          birthdate, 
+        setUser((prevUser) => ({
+          ...prevUser,
           programID: selectedGoal,
-         });
+        }));
+
+        console.log(responseData);
+        
+
         Alert.alert('Succès', 'Inscription réussie !');
         navigation.navigate('Home');
-      } else if (response.status === 400) { 
+      } else if (response.status === 400) {
         Alert.alert('Erreur', 'Ce compte existe déjà.');
       } else {
         Alert.alert('Erreur', responseData.message || 'Échec de l’inscription.');
@@ -114,10 +116,27 @@ const RegisterProgramScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  title: { fontSize: 64, fontWeight: '400', color: '#B8B8FF', marginTop: 30, marginLeft:50 },
-  title2: { fontSize: 64, fontWeight: '400', color: '#414144' },
-  container_for_program: { justifyContent: 'center', alignItems: 'center', flex: 1 },
+  container: {
+    flex: 1
+  },
+  title: {
+    fontSize: 64,
+    fontWeight: '400',
+    color: '#B8B8FF',
+    marginTop: 30,
+    marginLeft: 50
+  },
+  title2: {
+    fontSize: 64,
+    fontWeight: '400',
+    color: '#414144'
+  },
+  container_for_program: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+
+  },
   container_program: {
     height: '70%',
     width: '100%',
