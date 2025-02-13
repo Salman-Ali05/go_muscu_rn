@@ -6,7 +6,7 @@ import { useUser } from '../context/UserContext';
 const API_URL = 'https://go-muscu-api-seven.vercel.app/api/programs';
 
 const RegisterProgramScreen = ({ navigation }) => {
-  const { user, setUser } = useUser(); // Utilisation exclusive du contexte
+  const { user, setUser, setToken } = useUser(); // Utilisation exclusive du contexte
   const [programs, setPrograms] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -60,6 +60,11 @@ const RegisterProgramScreen = ({ navigation }) => {
         setUser((prevUser) => ({
           ...prevUser,
           programID: selectedGoal,
+        }));
+
+        setToken((prevUser) => ({
+          ...prevUser,
+          token: responseData.token,
         }));
 
         console.log(responseData);

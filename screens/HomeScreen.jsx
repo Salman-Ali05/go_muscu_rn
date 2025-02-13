@@ -38,16 +38,16 @@ const HomeScreen = () => {
         if (!id) {
             return;
         } else {
-
-            console.log(token);
+            console.log(token.token);
             
             try {
                 const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/programs/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `${token}`,
+                        Authorization: `${token.token}`,
                     },
                 });
+
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch program');
