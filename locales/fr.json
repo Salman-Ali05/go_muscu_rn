@@ -1,4 +1,5 @@
 {
   "login": "Connexion",
-  "register": "Inscription"
+  "register": "Inscription",
+  "password": "Mot de passe"
 }

@@ -3,7 +3,6 @@ import {
   Image,
   View,
   Text,
-  TextInput,
   StyleSheet,
   Alert,
   TouchableOpacity,
@@ -15,12 +14,14 @@ import {
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
 import { useUser } from '../context/UserContext';
+import { useTranslation } from 'react-i18next';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setUser, setToken } = useUser();
-
+  const { t } = useTranslation();
+ 
   const handleLogin = async () => {
     try {
       const response = await fetch('https://go-muscu-api-seven.vercel.app/api/auth/login', {
@@ -77,7 +78,7 @@ const LoginScreen = ({ navigation }) => {
             {/* Champ Mot de passe */}
             <FieldComponent
               iconName="lock"
-              placeholder="Mot de passe"
+              placeholder={t('password')}
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
