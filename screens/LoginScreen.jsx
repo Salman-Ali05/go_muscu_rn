@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Image, View, Text, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
 import { useUser } from '../context/UserContext';
@@ -7,7 +19,6 @@ import { useUser } from '../context/UserContext';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const { t } = useTranslation();
   const { setUser, setToken } = useUser();
 
   const handleLogin = async () => {
@@ -26,7 +37,6 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
         setUser(data.user);
         setToken(data.token);
-        
         navigation.navigate("Home");
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la connexion');
@@ -41,49 +51,49 @@ const LoginScreen = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Ajuste la position selon la plateforme
       style={styles.container}
-    > 
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            Go<Text style={styles.title2}>Muscu</Text>
-          </Text>
-        </View>
-        <View style={styles.imageContainer}>
-          <Image source={require('../assets/muscuImg.png')} style={styles.Image} />
-        </View>
-        <View style={styles.contentWrapper}>
-
-          {/* Champ Email */}
-          <FieldComponent 
-            iconName="email"
-            placeholder="Email"
-            secureTextEntry={false}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-
-          {/* Champ Mot de passe */}
-          <FieldComponent 
-            iconName="lock"
-            placeholder="Mot de passe"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-
-          <Text style={styles.subContent}>
-            Pas de compte ?{' '}
-            <Text
-              style={styles.subContent2}
-              onPress={() => navigation.navigate('Register')}
-            >
-              Créez-en un ici
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>
+              Go<Text style={styles.title2}>Muscu</Text>
             </Text>
-          </Text>
-          <TouchableButton iconName='login' onPress={handleLogin} />
+          </View>
+
+          <View style={styles.imageContainer}>
+            <Image source={require('../assets/muscuImg.png')} style={styles.image} />
+          </View>
+
+          <View style={styles.contentWrapper}>
+            {/* Champ Email */}
+            <FieldComponent
+              iconName="email"
+              placeholder="Email"
+              secureTextEntry={false}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+
+            {/* Champ Mot de passe */}
+            <FieldComponent
+              iconName="lock"
+              placeholder="Mot de passe"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+
+            {/* Correction de la structure du texte */}
+            <View style={styles.subContentContainer}>
+              <Text style={styles.subContent}>Pas de compte ?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                <Text style={styles.subContent2}> Créez-en un ici</Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableButton iconName='login' onPress={handleLogin} />
+          </View>
         </View>
-      </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -109,23 +119,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  inputContainer: {
-    flexDirection: 'row', // Place les icônes et les champs côte à côte
+  contentWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#B8B8FF', // Couleur de fond
-    borderRadius: 40, // Arrondi
-    height: 60,
+  },
+  image: {
     width: 300,
-    marginBottom: 20,
-    paddingHorizontal: 15,
+    height: 250,
+    resizeMode: 'contain',
   },
-  icon: {
-    marginRight: 10, // Espace entre l'icône et le champ
-  },
-  input: {
-    flex: 1, // Prend tout l'espace restant
-    fontSize: 16,
-    color: '#fff', // Couleur du texte
+  subContentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
   },
   subContent: {
     fontSize: 15,
@@ -134,36 +141,8 @@ const styles = StyleSheet.create({
   },
   subContent2: {
     fontSize: 15,
-    fontWeight: '400',
     color: '#9381FF',
   },
-  contentWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonStyle: {
-    backgroundColor: '#B8B8FF', // Couleur de fond
-    height: 70,
-    width: 70,
-    borderRadius: 35,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  footerContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    marginTop: 20,
-  },
-  Image: {
-    width: 300,
-    height: 250,
-    objectFit: 'contain',
-  }
 });
 
 export default LoginScreen;
