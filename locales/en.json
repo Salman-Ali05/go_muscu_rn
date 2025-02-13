@@ -1,5 +1,12 @@
 {
   "login": "Login",
   "register": "Register",
-  "password": "Password"
+  "email": "Email",
+  "password": "Password",
+  "no-account-1": "No account?",
+  "no-account-2": "Create one here",
+  "username": "Username",
+  "birthdate": "Date of Birth",
+  "next": "Next",
+  "back": "Back"
 }

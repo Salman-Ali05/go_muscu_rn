@@ -1,5 +1,12 @@
 {
   "login": "Connexion",
   "register": "Inscription",
-  "password": "Mot de passe"
+  "email": "Mail",
+  "password": "Mot de passe",
+  "no-account-1": "Pas de compte ?",
+  "no-account-2": "Créez-en un ici",
+  "username": "Nom d'utilisateur",
+  "birthdate": "Date de naissance",
+  "next": "Suivant",
+  "back": "Retour"
 }

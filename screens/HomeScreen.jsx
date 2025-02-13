@@ -21,16 +21,16 @@ const HomeScreen = () => {
     };
 
     const imageMap = {
-        'triceps_skull.jpg': require('../assets/triceps_skull.jpg'),
-        'jambes_squat.jpg': require('../assets/jambes_squat.jpg'),
-        'epaules_dev.jpg': require('../assets/epaules_dev.jpg'),
-        'dos_tractions.jpg': require('../assets/dos_tractions.jpg'),
-        'dos_rowing.jpg': require('../assets/dos_rowing.jpg'),
-        'pect_coucher.jpg': require('../assets/pect_coucher.jpg'),
-        'jambes_mollets.jpg': require('../assets/jambes_mollets.jpg'),
-        'triceps_poulie.jpg': require('../assets/triceps_poulie.jpg'),
-        'bicep_hammer.jpg': require('../assets/bicep_hammer.jpg'),
-        'epaules_lateral.jpg': require('../assets/epaules_lateral.jpg'),
+        '../assets/triceps_skull.jpg': require('../assets/triceps_skull.jpg'),
+        '../assets/jambes_squat.jpg': require('../assets/jambes_squat.jpg'),
+        '../assets/epaules_dev.jpg': require('../assets/epaules_dev.jpg'),
+        '../assets/dos_tractions.jpg': require('../assets/dos_tractions.jpg'),
+        '../assets/dos_rowing.jpg': require('../assets/dos_rowing.jpg'),
+        '../assets/pect_coucher.jpg': require('../assets/pect_coucher.jpg'),
+        '../assets/jambes_mollets.jpg': require('../assets/jambes_mollets.jpg'),
+        '../assets/triceps_poulie.jpg': require('../assets/triceps_poulie.jpg'),
+        '../assets/bicep_hammer.jpg': require('../assets/bicep_hammer.jpg'),
+        '../assets/epaules_lateral.jpg': require('../assets/epaules_lateral.jpg'),
     };
 
     async function fetchProgram() {

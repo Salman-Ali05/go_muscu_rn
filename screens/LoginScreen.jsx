@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
             {/* Champ Email */}
             <FieldComponent
               iconName="email"
-              placeholder="Email"
+              placeholder={t('email')}
               secureTextEntry={false}
               value={email}
               onChangeText={(text) => setEmail(text)}
@@ -86,9 +86,9 @@ const LoginScreen = ({ navigation }) => {
 
             {/* Correction de la structure du texte */}
             <View style={styles.subContentContainer}>
-              <Text style={styles.subContent}>Pas de compte ?</Text>
+              <Text style={styles.subContent}>{t('no-account-1')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.subContent2}> Créez-en un ici</Text>
+                <Text style={styles.subContent2}> {t('no-account-2')}</Text>
               </TouchableOpacity>
             </View>
 
