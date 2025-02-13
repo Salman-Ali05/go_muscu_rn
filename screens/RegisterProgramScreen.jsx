@@ -62,13 +62,7 @@ const RegisterProgramScreen = ({ navigation }) => {
           programID: selectedGoal,
         }));
 
-        setToken((prevUser) => ({
-          ...prevUser,
-          token: responseData.token,
-        }));
-
-        console.log(responseData);
-        
+        setToken(responseData.token); // ✅ Correction ici
 
         Alert.alert('Succès', 'Inscription réussie !');
         navigation.navigate('Home');

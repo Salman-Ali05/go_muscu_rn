@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Image, View, Text, TextInput, StyleSheet, Alert, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { FieldComponent } from '../components/FieldComponent';
 import { TouchableButton } from '../components/TouchableButton';
@@ -27,6 +26,7 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Succès', `Bienvenue, ${data.user.name}`);
         setUser(data.user);
         setToken(data.token);
+        
         navigation.navigate("Home");
       } else {
         Alert.alert('Erreur', data.message || 'Échec de la connexion');

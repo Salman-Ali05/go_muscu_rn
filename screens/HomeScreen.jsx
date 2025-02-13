@@ -38,13 +38,11 @@ const HomeScreen = () => {
         if (!id) {
             return;
         } else {
-            console.log(token.token);
-            
             try {
                 const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/programs/${id}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `${token.token}`,
+                        Authorization: `${token}`,
                     },
                 });
 
