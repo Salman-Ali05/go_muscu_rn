@@ -1,20 +1,56 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../context/UserContext';
 
 const ProfileScreen = () => {
+    const { user, token } = useUser();
+    const [program, setProgram] = useState(null);
+    const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
 
     const navigation = useNavigation();
+    const id = user?.programID;
+
+    async function fetchProgram() {
+        if (!id) return;
+
+        try {
+            const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/programs/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch program');
+            }
+
+            const data = await response.json();
+            setProgram(data);
+        } catch (error) {
+            console.error('Error fetching program:', error);
+        } finally {
+            setLoading(false); // Arrêter le chargement après la requête
+        }
+    }
+
+    useEffect(() => {
+        fetchProgram();
+    }, []);
 
     return (
         <View style={styles.container}>
-
             <View style={styles.header}>
                 <View style={styles.title}>
                     <Text style={styles.titleText}>Profil</Text>
-                    <Text>Prise de masse</Text>
+                    {loading ? (
+                        <ActivityIndicator size="small" color="#B8B8FF" />
+                    ) : (
+                        <Text>{program ? program.name : "Aucun programme assigné"}</Text>
+                    )}
                 </View>
                 <TouchableOpacity style={styles.photo}>
                     <Icon name="account-circle" size={50} color="#B8B8FF" />
@@ -23,14 +59,14 @@ const ProfileScreen = () => {
 
             <View style={styles.userInfo}>
                 <Image style={styles.profileImage} />
-                <Text style={styles.userName}>Bonjour, Ianis</Text>
-                <Text style={styles.userEmail}>ianis@example.com</Text>
+                <Text style={styles.userName}>Bonjour {user.name}</Text>
+                <Text style={styles.userEmail}>{user.email}</Text>
             </View>
 
             <View style={styles.stats}>
                 <View style={styles.statBox}>
                     <Text style={styles.statNumber}>27kg</Text>
-                    <Text style={styles.statLabel}>Denière perf : Biceps curl</Text>
+                    <Text style={styles.statLabel}>Dernière perf : Biceps curl</Text>
                 </View>
             </View>
 
@@ -76,7 +112,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     userInfo: {
         alignItems: 'center',
     },
@@ -94,7 +129,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#6B6B6B',
     },
-
     stats: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -113,7 +147,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#6B6B6B',
     },
-
     actions: {
         marginVertical: 20,
         paddingHorizontal: 20,

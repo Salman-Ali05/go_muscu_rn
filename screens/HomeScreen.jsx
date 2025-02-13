@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../context/UserContext';
-import { use } from 'i18next';
 
 const HomeScreen = () => {
     const navigation = useNavigation();

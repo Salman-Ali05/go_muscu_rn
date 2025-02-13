@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -13,13 +13,26 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Navbar from '../components/Navbar';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../context/UserContext';
 
 const PersonnalInfoScreen = () => {
     const navigation = useNavigation();
+    const { user, setUser, token } = useUser();
+
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [birthDate, setBirthDate] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    // Charger les informations de l'utilisateur
+    useEffect(() => {
+        if (user) {
+            setName(user.name || '');
+            setEmail(user.email || '');
+            setBirthDate(user.birthdate || '');
+        }
+    }, [user]);
 
     // Gestion du DateTimePickerModal
     const showDatePicker = () => setDatePickerVisibility(true);
@@ -31,12 +44,56 @@ const PersonnalInfoScreen = () => {
         hideDatePicker();
     };
 
-    const handleSave = () => {
-        if (!email || !newPassword || !birthDate) {
+    const handleSave = async () => {
+        if (!name || !email || !birthDate) {
             Alert.alert('Erreur', 'Tous les champs sont obligatoires');
             return;
         }
-        Alert.alert('Succès', 'Vos informations ont été mises à jour !');
+
+        try {
+            const updatedUserData = {
+                name,
+                email,
+                birthdate: birthDate,
+                ...(newPassword && { password: newPassword }), // Inclure le mot de passe seulement s'il est fourni
+            };
+
+            const response = await fetch(`https://go-muscu-api-seven.vercel.app/api/users/${user.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+                body: JSON.stringify(updatedUserData),
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                // Récupérer les nouvelles données mises à jour depuis l'API
+                const updatedUserResponse = await fetch(`https://go-muscu-api-seven.vercel.app/api/users/${user.id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`
+                    }
+                });
+
+                const updatedUser = await updatedUserResponse.json();
+
+                if (updatedUserResponse.ok) {
+                    setUser(updatedUser); // Mettre à jour le contexte avec les nouvelles données
+                    Alert.alert('Succès', 'Vos informations ont été mises à jour avec succès !');
+                    navigation.navigate('Profile');
+                } else {
+                    Alert.alert('Erreur', 'Erreur lors de la récupération des nouvelles données.');
+                }
+            } else {
+                Alert.alert('Erreur', responseData.message || 'Une erreur est survenue lors de la mise à jour.');
+            }
+        } catch (error) {
+            Alert.alert('Erreur', 'Problème de connexion.');
+            console.error(error);
+        }
     };
 
     return (
@@ -51,6 +108,15 @@ const PersonnalInfoScreen = () => {
                     </View>
 
                     <View style={styles.form}>
+                        {/* Champ Nom */}
+                        <TextInput
+                            placeholder="Nom"
+                            style={styles.input}
+                            value={name}
+                            onChangeText={setName}
+                            placeholderTextColor={"#e6e7e7"}
+                        />
+
                         {/* Champ Email */}
                         <TextInput
                             placeholder="Email"
